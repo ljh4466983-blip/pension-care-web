@@ -11,7 +11,7 @@
 
 ## 배포
 1. Vercel: Add New, Project, Framework Preset Other, Build Command 비움
-2. 도메인 연결 후 전체 파일에서 https://pension-check.vercel.app 를 실제 주소로 일괄 교체
+2. 배포 주소: https://pension-care-web.vercel.app (canonical, og:url, sitemap.xml, robots.txt에 반영 완료)
 3. 구글 서치콘솔, 네이버 서치어드바이저에 sitemap.xml 제출
 
 ## 애드센스 신청 순서
