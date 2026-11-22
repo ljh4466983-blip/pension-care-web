@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5060 연금, 건보료 계산기 | 국민연금 조기수령 손익분기, 건강보험 피부양자, 병원비 환급</title>
+<meta name="description" content="국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 병원비 본인부담상한제 환급액을 2026년 기준으로 바로 계산해 보세요. 출생연도와 금액만 넣으면 끝나는 5060 세대용 무료 계산기입니다.">
+<meta name="keywords" content="국민연금 조기수령, 조기노령연금, 손익분기, 건강보험 피부양자, 피부양자 탈락, 본인부담상한제, 병원비 환급, 5060, 연금 계산기">
+<meta name="author" content="알려드림">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#1749b8">
+<link rel="canonical" href="https://pension-check.vercel.app/">
+
+<!-- Open Graph / 공유 미리보기 -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="연금건보 체크">
+<meta property="og:title" content="5060 연금, 건보료 계산기: 조기수령 손익분기, 피부양자, 병원비 환급">
+<meta property="og:description" content="1년 6%, 5년이면 30% 깎이는 국민연금. 내가 유리한 나이는 언제일까요? 피부양자 탈락 여부와 병원비 환급액까지 한 화면에서 확인하세요.">
+<meta property="og:url" content="https://pension-check.vercel.app/">
+<meta property="og:image" content="https://pension-check.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="5060 연금, 건보료 계산기: 조기수령 손익분기, 피부양자, 병원비 환급">
+<meta name="twitter:description" content="출생연도와 금액만 넣으면 조기수령 손익분기 나이, 피부양자 탈락 여부, 병원비 환급액을 계산합니다. 2026년 기준.">
+<meta name="twitter:image" content="https://pension-check.vercel.app/og-image.png">
+
+<style>
+  :root{
+    --ink:#14161c;
+    --muted:#4e5666;
+    --line:#d9dde5;
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --brand:#1749b8;
+    --brand-dark:#0f327f;
+    --brand-soft:#e8eefc;
+    --green:#0d6b3d;
+    --green-soft:#e4f5ec;
+    --amber:#8a4a00;
+    --amber-soft:#fff2dc;
+    --red:#ae1b26;
+    --red-soft:#fdecee;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.06),0 6px 18px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+    font-size:17px;
+    line-height:1.68;
+    letter-spacing:-0.01em;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  @media (min-width:430px){ body{font-size:18px} }
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
+  a{color:var(--brand-dark);text-underline-offset:3px}
+  a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
+    outline:3px solid #1749b8;outline-offset:2px
+  }
+
+  /* ── 헤더 ── */
+  .site-head{
+    background:linear-gradient(160deg,#1749b8 0%,#0f327f 100%);
+    color:#fff;padding:22px 0 26px;
+  }
+  .site-head .wrap{display:block}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:0}
+  .brand .dot{
+    width:26px;height:26px;border-radius:50%;background:#fff;color:#1749b8;
+    display:grid;place-items:center;font-size:15px;font-weight:900
+  }
+  .site-head h1{
+    margin:14px 0 8px;font-size:25px;line-height:1.38;font-weight:800;letter-spacing:-0.02em
+  }
+  .site-head p{margin:0;color:#d7e2ff;font-size:16px;line-height:1.6}
+  .stamp{
+    display:inline-block;margin-top:12px;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);border-radius:999px;
+    padding:4px 12px;font-size:14px;font-weight:600;color:#fff
+  }
+
+  /* ── 탭 ── */
+  .tabs{
+    position:sticky;top:0;z-index:20;background:var(--bg);
+    border-bottom:1px solid var(--line);
+    padding:10px 0 0;
+  }
+  .tabs .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tabbtn{
+    appearance:none;border:1.5px solid var(--line);background:#fff;color:#2c3340;
+    border-radius:12px 12px 0 0;border-bottom:none;
+    padding:10px 4px 11px;font:inherit;font-weight:700;font-size:15.5px;line-height:1.3;
+    min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    cursor:pointer;
+  }
+  .tabbtn .num{
+    font-size:12px;font-weight:800;color:#7a8395;letter-spacing:.04em
+  }
+  .tabbtn[aria-selected="true"]{
+    background:#fff;border-color:var(--brand);color:var(--brand-dark);
+    box-shadow:0 -3px 0 var(--brand) inset;
+  }
+  .tabbtn[aria-selected="true"] .num{color:var(--brand)}
+
+  /* ── 본문 ── */
+  main{padding:20px 0 8px}
+  .panel{display:none}
+  .panel.is-active{display:block}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 18px;margin:0 0 16px;box-shadow:var(--shadow)
+  }
+  h2{font-size:22px;line-height:1.4;margin:0 0 6px;font-weight:800;letter-spacing:-0.02em}
+  h3{font-size:19px;line-height:1.45;margin:26px 0 8px;font-weight:800}
+  .lead{margin:0 0 18px;color:var(--muted);font-size:16px}
+
+  .field{margin:0 0 22px}
+  .field:last-of-type{margin-bottom:16px}
+  label,.flabel{display:block;font-weight:700;font-size:17px;margin:0 0 8px}
+  .hint{margin:7px 0 0;color:var(--muted);font-size:14.5px;line-height:1.55}
+  input[type=number],select{
+    width:100%;height:58px;padding:0 14px;font:inherit;font-size:19px;font-weight:600;
+    color:var(--ink);background:#fff;border:1.5px solid #b9c0cc;border-radius:11px;
+  }
+  input[type=number]{appearance:textfield}
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  select{
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%234e5666' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;padding-right:46px;
+  }
+  .input-wrap{position:relative}
+  .input-wrap input{padding-right:64px}
+  .input-wrap .unit{
+    position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    color:var(--muted);font-weight:700;font-size:17px;pointer-events:none
+  }
+
+  .seg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .seg button{
+    appearance:none;border:1.5px solid #b9c0cc;background:#fff;color:#2c3340;
+    font:inherit;font-weight:700;font-size:16.5px;border-radius:11px;min-height:56px;cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{
+    background:var(--brand);border-color:var(--brand);color:#fff;
+    box-shadow:0 2px 0 rgba(15,50,127,.35)
+  }
+
+  .radios{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .radio{
+    display:flex;align-items:center;gap:10px;border:1.5px solid #b9c0cc;border-radius:11px;
+    min-height:56px;padding:10px 14px;background:#fff;cursor:pointer;font-weight:700;font-size:17px
+  }
+  .radio input{width:22px;height:22px;accent-color:var(--brand);margin:0}
+  .radio.is-on{border-color:var(--brand);background:var(--brand-soft)}
+  .check{
+    display:flex;align-items:flex-start;gap:11px;border:1.5px solid #b9c0cc;border-radius:11px;
+    padding:14px;background:#fff;cursor:pointer;font-weight:600;font-size:16.5px
+  }
+  .check input{width:22px;height:22px;accent-color:var(--brand);margin:2px 0 0;flex:0 0 auto}
+  .check.is-on{border-color:var(--brand);background:var(--brand-soft)}
+
+  .result{
+    background:var(--card);border:1.5px solid var(--brand);border-radius:var(--radius);
+    padding:20px 18px;margin:0 0 16px;box-shadow:var(--shadow);scroll-margin-top:90px
+  }
+  .result h3{margin:0 0 14px;font-size:18px;color:var(--brand-dark);letter-spacing:0}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+  .mini{
+    border:1px solid var(--line);border-radius:12px;padding:14px 12px;background:#fbfcfe
+  }
+  .mini .k{font-size:14px;color:var(--muted);font-weight:700;margin:0 0 4px}
+  .mini .v{font-size:23px;font-weight:800;line-height:1.25;letter-spacing:-0.02em}
+  .mini .s{font-size:13.5px;color:var(--muted);margin:4px 0 0;line-height:1.45}
+  .big{
+    text-align:center;background:var(--brand-soft);border-radius:12px;padding:18px 12px;margin:0 0 8px
+  }
+  .big .k{font-size:15px;font-weight:800;color:var(--brand-dark);margin:0 0 6px}
+  .big .v{font-size:33px;font-weight:900;line-height:1.2;letter-spacing:-0.03em;color:var(--brand-dark)}
+  .big .s{font-size:15px;color:#2c3340;margin:8px 0 0;line-height:1.55}
+
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+  table{border-collapse:collapse;width:100%;font-size:15px;min-width:0}
+  caption{text-align:left;font-size:15px;color:var(--muted);font-weight:700;padding:0 0 8px;line-height:1.5}
+  th,td{padding:11px 7px;border-bottom:1px solid var(--line);text-align:right;white-space:normal;word-break:keep-all;line-height:1.5}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#f0f3f9;font-size:14px;color:#2c3340;border-bottom:1.5px solid #c8cfdb}
+  tbody tr:last-child td{border-bottom:none}
+  table.t-compact{font-size:14px}
+  table.t-compact th,table.t-compact td{padding:10px 5px}
+  table.t-compact thead th{font-size:13px}
+  .pos{color:var(--green);font-weight:800}
+  .neg{color:var(--red);font-weight:800}
+
+  .bars{margin:16px 0 0}
+  .barline{display:grid;grid-template-columns:46px 1fr 92px;align-items:center;gap:8px;margin:0 0 7px}
+  .barname{font-size:13.5px;font-weight:800;color:#2c3340}
+  .bartrack{background:#eef1f6;border-radius:6px;height:22px;overflow:hidden}
+  .barfill{height:100%;border-radius:6px}
+  .bar-early{background:#e08b1f}
+  .bar-normal{background:#1749b8}
+  .barval{font-size:13.5px;font-weight:700;color:#2c3340;text-align:right}
+  .agediv{font-size:14.5px;font-weight:800;margin:14px 0 6px;color:#2c3340}
+  .legend{display:flex;gap:16px;font-size:13.5px;color:var(--muted);margin:12px 0 0;flex-wrap:wrap}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+  .note{
+    border-left:4px solid var(--brand);background:#f7f9fe;border-radius:0 10px 10px 0;
+    padding:14px 14px;margin:16px 0 0;font-size:15.5px;line-height:1.65
+  }
+  .note strong{font-weight:800}
+  .note.warn{border-left-color:#c97800;background:#fff9ee}
+  .note.danger{border-left-color:var(--red);background:var(--red-soft)}
+  .note.ok{border-left-color:var(--green);background:var(--green-soft)}
+  .note p{margin:0 0 8px}
+  .note p:last-child{margin:0}
+  .note ul{margin:6px 0 0;padding-left:20px}
+  .note li{margin:0 0 4px}
+
+  .badge{
+    display:inline-block;border-radius:999px;padding:7px 15px;font-weight:900;font-size:17px;margin:0 0 12px
+  }
+  .badge.ok{background:var(--green);color:#fff}
+  .badge.warn{background:#c97800;color:#fff}
+  .badge.danger{background:var(--red);color:#fff}
+  .verdict{margin:0 0 6px;font-size:20px;font-weight:800;line-height:1.4}
+
+  .btn{
+    appearance:none;display:block;width:100%;min-height:58px;border:none;border-radius:12px;
+    background:var(--brand);color:#fff;font:inherit;font-size:19px;font-weight:800;
+    cursor:pointer;box-shadow:0 3px 0 var(--brand-dark);margin:6px 0 0
+  }
+  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--brand-dark)}
+  .btn.ghost{background:#fff;color:var(--brand-dark);border:1.5px solid var(--brand);box-shadow:none;min-height:52px;font-size:17px}
+
+  /* ── 콘텐츠, FAQ ── */
+  .content{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 18px;margin:0 0 16px;box-shadow:var(--shadow)}
+  .content h2{font-size:21px;margin:0 0 12px}
+  .content h3{font-size:18px;margin:22px 0 6px}
+  .content p{margin:0 0 12px}
+  .content ul,.content ol{margin:0 0 12px;padding-left:22px}
+  .content li{margin:0 0 6px}
+  .content table{min-width:0;font-size:15px;margin:10px 0 16px}
+  .content table th,.content table td{white-space:normal}
+  .content table.t-text td{text-align:left;vertical-align:top}
+  .content table.t-text td:first-child{width:34%;font-weight:700;color:#2c3340}
+  .content table.t-text td:last-child{padding-left:10px}
+
+  details{border:1px solid var(--line);border-radius:11px;padding:0;margin:0 0 10px;background:#fff}
+  details[open]{background:#fbfcfe;border-color:#c3cde2}
+  summary{
+    cursor:pointer;padding:16px 44px 16px 16px;font-weight:700;font-size:16.5px;position:relative;list-style:none;line-height:1.5
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{
+    content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    font-size:24px;font-weight:700;color:var(--brand);line-height:1
+  }
+  details[open] summary::after{content:"\2212"}
+  details .body{padding:0 16px 16px;font-size:16px;color:#2c3340}
+  details .body p{margin:0 0 10px}
+  details .body p:last-child{margin:0}
+
+  .src{font-size:14px;color:var(--muted)}
+  .src li{margin:0 0 5px}
+  .foot{
+    background:#1b202c;color:#c3cad8;padding:26px 0 34px;margin-top:8px;font-size:14.5px
+  }
+  .foot strong{color:#fff;display:block;font-size:16px;margin:0 0 8px}
+  .foot p{margin:0 0 10px}
+  .foot a{color:#b9ccff}
+  .disclaimer{
+    background:#2a3140;border-radius:11px;padding:14px;margin:14px 0 0;color:#dfe5f0;font-size:14.5px;line-height:1.6
+  }
+  .skip{position:absolute;left:-9999px}
+  .skip:focus{position:static;display:inline-block;margin:8px;background:#fff;padding:8px 12px;border-radius:8px}
+
+  @media print{
+    .tabs,.btn,.site-head{background:#fff!important;color:#000!important}
+    .tabbtn{min-height:auto}
+    .panel{display:block!important;page-break-inside:avoid}
+    body{background:#fff;font-size:12pt}
+    details{border:none} details .body{display:block!important}
+  }
+
+  .headrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .brand{color:#fff;text-decoration:none}
+  .gnav{display:flex;gap:4px}
+  .gnav a{color:#fff;font-weight:700;font-size:15.5px;text-decoration:none;padding:8px 10px;border-radius:9px;min-height:44px;display:inline-flex;align-items:center}
+  .gnav a:hover,.gnav a[aria-current=page]{background:rgba(255,255,255,.18)}
+  .related{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:0 0 16px}
+  .related h2{font-size:19px;margin:0 0 10px}
+  .related ul{margin:0;padding-left:20px}.related li{margin:0 0 8px}
+  .crumb{font-size:14px;color:var(--muted);margin:0 0 10px}.crumb a{color:var(--muted)}
+  .guide-list{list-style:none;padding:0;margin:0}
+  .guide-list li{border-bottom:1px solid var(--line);padding:14px 0}.guide-list li:last-child{border:0}
+  .guide-list a{font-weight:800;font-size:17.5px;text-decoration:none}
+  .guide-list p{margin:4px 0 0;color:var(--muted);font-size:15px}
+  a.btn{text-align:center;text-decoration:none;line-height:58px}
+  .foot nav{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 10px}
+  .foot nav a{min-height:40px;display:inline-flex;align-items:center}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문으로 바로 가기</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="headrow"><a class="brand" href="/"><span class="dot" aria-hidden="true">연</span> 연금건보 체크</a><nav class="gnav" aria-label="사이트 메뉴"><a href="/" aria-current="page">계산기</a><a href="/guide">가이드</a><a href="/about">소개</a></nav></div>
+    <h1>5060 연금, 건보료 계산기</h1>
+    <p>조기수령 손익분기, 피부양자, 병원비 환급<br>숫자만 넣으면 바로 확인됩니다.</p>
+    <span class="stamp">2026년 11월 기준, 무료</span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="계산기 선택">
+  <div class="wrap" role="tablist">
+    <button class="tabbtn" id="tabbtn-pension" role="tab" aria-selected="true" aria-controls="tab-pension" data-tab="pension">
+      <span class="num">01</span><span>국민연금<br>조기수령</span>
+    </button>
+    <button class="tabbtn" id="tabbtn-insurance" role="tab" aria-selected="false" aria-controls="tab-insurance" data-tab="insurance">
+      <span class="num">02</span><span>건보<br>피부양자</span>
+    </button>
+    <button class="tabbtn" id="tabbtn-medical" role="tab" aria-selected="false" aria-controls="tab-medical" data-tab="medical">
+      <span class="num">03</span><span>병원비<br>본인부담상한</span>
+    </button>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="wrap">
+
+    <!-- ══════════════ 탭 1 ══════════════ -->
+    <section class="panel is-active" id="tab-pension" role="tabpanel" aria-labelledby="tabbtn-pension" tabindex="0">
+      <div class="card">
+        <h2>국민연금 조기수령 손익분기 계산기</h2>
+        <p class="lead">1년 당길 때마다 6%, 5년이면 30%가 깎입니다. 그런데 먼저 받는 5년치를 합치면 유리한 쪽이 갈리는 나이가 따로 있습니다.</p>
+
+        <div class="field">
+          <label for="birthYear">출생연도</label>
+          <select id="birthYear"></select>
+          <p class="hint" id="normalAgeHint"></p>
+        </div>
+
+        <div class="field">
+          <label for="normalPension">예상 정상 월 연금액</label>
+          <div class="input-wrap">
+            <input id="normalPension" type="number" inputmode="numeric" min="10" max="400" step="1" value="100" aria-describedby="normalPensionHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="normalPensionHint">국민연금공단 ‘내 연금 알아보기’에서 확인한 예상연금월액을 넣으세요. 부양가족연금은 빼고 넣습니다.</p>
+        </div>
+
+        <div class="field">
+          <span class="flabel" id="earlyYearsLabel">몇 년 앞당길까요?</span>
+          <div class="seg" role="group" aria-labelledby="earlyYearsLabel" id="earlySeg">
+            <button type="button" data-years="1" aria-pressed="false">1년</button>
+            <button type="button" data-years="2" aria-pressed="false">2년</button>
+            <button type="button" data-years="3" aria-pressed="false">3년</button>
+            <button type="button" data-years="4" aria-pressed="false">4년</button>
+            <button type="button" data-years="5" aria-pressed="true">5년</button>
+          </div>
+          <p class="hint">1년 6%씩 감액되어 5년 앞당기면 정상액의 70%를 평생 받습니다.</p>
+        </div>
+
+        <div class="field">
+          <label for="income">현재 월 근로, 사업소득 <span style="font-weight:600;color:var(--muted)">(선택)</span></label>
+          <div class="input-wrap">
+            <input id="income" type="number" inputmode="numeric" min="0" max="2000" step="10" value="0" aria-describedby="incomeHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="incomeHint">통장에 들어온 월급이 아니라, 근로소득금액, 사업소득금액을 그해 종사 개월 수로 나눈 ‘월평균소득금액’입니다. 모르면 0으로 두세요.</p>
+        </div>
+
+        <button class="btn" id="calcPensionBtn" type="button">내 손익분기 계산하기</button>
+      </div>
+
+      <div id="pensionResult" aria-live="polite"></div>
+
+      <div class="content">
+        <h2>조기수령, 무엇을 비교해야 할까요</h2>
+        <p>조기노령연금은 정상 수급 개시연령보다 최대 5년 먼저 받는 대신, 받는 금액이 줄어드는 제도입니다. 줄어든 비율은 정상 나이가 되어도 되돌아오지 않고 평생 유지됩니다. 그래서 “30% 손해”라는 말만 보면 손해처럼 느껴지지만, 실제 손익은 <strong>먼저 받는 돈</strong>과 <strong>평생 덜 받는 돈</strong>이 같아지는 시점, 즉 손익분기 나이에서 갈립니다.</p>
+        <p>예를 들어 정상 수령액이 월 100만 원이고 5년을 앞당기면 월 70만 원이 됩니다. 5년 동안 4,200만 원을 먼저 받고, 그 뒤로는 매달 30만 원씩 덜 받습니다. 이 차액이 먼저 받은 4,200만 원을 따라잡는 데 걸리는 시간은 140개월, 약 11년 8개월입니다. 정상 수령 나이(65세)에 더하면 <strong>만 76세 8개월</strong>이 손익분기점이 됩니다.</p>
+        <p>이 계산에는 물가상승률, 연금소득세, 건강보험료가 들어 있지 않습니다. 국민연금은 물가상승률만큼 매년 인상되므로, 감액된 연금도 같은 비율로 오릅니다. 그 덕분에 위 비율 계산은 물가를 빼고 봐도 거의 어긋나지 않습니다. 다만 연금소득세와 건강보험료는 금액이 커질수록 부담도 커지므로, 실제 차이는 계산보다 조금 줄어드는 방향으로 움직입니다.</p>
+        <h3>먼저 확인해야 할 조건 두 가지</h3>
+        <ol>
+          <li><strong>가입기간 10년(120개월) 이상</strong>: 못 채우면 조기수령이 아니라 반환일시금 대상입니다.</li>
+          <li><strong>‘소득이 있는 업무’에 종사하지 않을 것</strong>: 2026년 기준 월평균소득금액이 A값 319만 3,511원을 넘으면 조기노령연금 대상이 되지 않습니다. 수령 중에 소득이 생겨 이 기준을 넘으면 그 기간은 지급이 정지됩니다.</li>
+        </ol>
+        <div class="note warn">
+          <p><strong>2026년 6월 17일부터 달라진 점</strong>: 정상 수령 이후 ‘일하는 수급자’의 감액 기준은 A값에서 <strong>A값+200만 원(월 519만 3,511원)</strong>으로 올라갔습니다. 하지만 조기수령 중 지급정지 판단은 여전히 <strong>A값(319만 3,511원)</strong> 기준입니다. 두 기준을 같은 것으로 알고 신청하면 예상과 다른 결과가 나올 수 있습니다.</p>
+        </div>
+      </div>
+      <aside class="related"><h2>더 자세히 알아보기</h2><ul><li><a href="/guide/pension-age-by-birth-year">출생연도별 국민연금 수령 나이와 조기수령 가능 나이 (2026년 기준)</a></li><li><a href="/guide/early-pension-break-even">국민연금 조기수령 손익분기 나이 계산법과 실제 예시</a></li><li><a href="/guide/working-pension-suspension">일하면서 국민연금 받기: 조기연금 지급정지와 2026년 감액 기준 변경</a></li></ul></aside>
+    </section>
+
+    <!-- ══════════════ 탭 2 ══════════════ -->
+    <section class="panel" id="tab-insurance" role="tabpanel" aria-labelledby="tabbtn-insurance" tabindex="0">
+      <div class="card">
+        <h2>건강보험 피부양자 탈락 자가진단</h2>
+        <p class="lead">소득, 재산, 사업소득 세 가지 문을 모두 통과해야 피부양자로 남습니다. 하나만 넘어도 지역가입자가 되어 보험료를 따로 냅니다.</p>
+
+        <div class="field">
+          <label for="relation">직장가입자와의 관계</label>
+          <select id="relation">
+            <option value="family">배우자, 부모, 자녀</option>
+            <option value="sibling">형제, 자매</option>
+          </select>
+          <p class="hint">직계존속, 비속과 그 배우자, 본인 배우자가 여기에 해당합니다. 형제, 자매는 재산 기준이 훨씬 낮습니다(재산세 과세표준 1억 8천만 원 이하).</p>
+        </div>
+
+        <div class="field">
+          <label for="property">재산세 과세표준 합계</label>
+          <select id="property">
+            <option value="low">5억 4천만 원 이하</option>
+            <option value="mid">5억 4천만 원 초과 ~ 9억 원 이하</option>
+            <option value="high">9억 원 초과</option>
+          </select>
+          <p class="hint">시세나 공시가격이 아니라 재산세 고지서, 위택스에 찍힌 <strong>과세표준</strong>입니다. 1세대 1주택이면 과표 5.4억은 공시가격 약 12억, 9억은 약 20억에 해당합니다.</p>
+        </div>
+
+        <div class="field">
+          <span class="flabel">사업자등록이 되어 있나요?</span>
+          <div class="radios" id="bizRadios">
+            <label class="radio"><input type="radio" name="biz" value="no" checked><span>아니요</span></label>
+            <label class="radio"><input type="radio" name="biz" value="yes"><span>예</span></label>
+          </div>
+          <p class="hint">사업자등록이 있으면 사업소득이 1원이라도 생기는 순간 탈락입니다. 등록이 없을 때만 연 500만 원까지 봐줍니다.</p>
+        </div>
+
+        <div class="field">
+          <label for="bizIncome">연간 사업소득</label>
+          <div class="input-wrap">
+            <input id="bizIncome" type="number" inputmode="numeric" min="0" max="20000" step="10" value="0">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint">매출이 아니라 필요경비를 뺀 사업소득금액입니다. 없으면 0.</p>
+        </div>
+
+        <div class="field">
+          <label class="check" for="rental">
+            <input type="checkbox" id="rental">
+            <span>주택임대소득이 있습니다 <span style="font-weight:600;color:var(--muted)">(월세, 전세보증금 운용 등)</span></span>
+          </label>
+          <p class="hint">주택임대소득은 사업자등록이 없어도, 500만 원 이하여도 예외 없이 탈락 사유가 됩니다.</p>
+        </div>
+
+        <div class="field">
+          <label for="totalIncome">연간 소득 합계</label>
+          <div class="input-wrap">
+            <input id="totalIncome" type="number" inputmode="numeric" min="0" max="30000" step="10" value="0">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint">이자, 배당, 연금, 근로, 기타소득을 모두 더한 금액입니다. 공적연금은 세금 공제 전, 받은 금액 전부를 넣습니다. 이자, 배당은 합계 1,000만 원 이하면 합산하지 않는 것이 원칙입니다(적용 여부는 공단 확인).</p>
+        </div>
+
+        <button class="btn" id="calcInsuranceBtn" type="button">피부양자 자격 진단하기</button>
+      </div>
+
+      <div id="insuranceResult" aria-live="polite"></div>
+
+      <div class="content">
+        <h2>피부양자, 왜 떨어지는 걸까요</h2>
+        <p>피부양자는 직장가입자에게 주로 생계를 의존하는 가족으로, 보험료를 따로 내지 않고 건강보험 혜택을 받는 사람입니다. 국민건강보험법 시행규칙 별표 1의2는 세 가지 요건을 함께 보도록 정하고 있습니다.</p>
+        <table class="t-text">
+          <thead><tr><th>기준</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td>소득 합계</td><td>연 2,000만 원 이하</td></tr>
+            <tr><td>사업소득</td><td>원칙적으로 없어야 함</td></tr>
+            <tr><td>사업자등록 없음</td><td>사업소득 연 500만 원까지 인정</td></tr>
+            <tr><td>재산 과표 5.4억 이하</td><td>소득 2,000만 원까지 인정</td></tr>
+            <tr><td>재산 과표 5.4억 초과~9억</td><td>소득 1,000만 원 이하일 때만 인정</td></tr>
+            <tr><td>재산 과표 9억 초과</td><td>소득과 무관하게 탈락</td></tr>
+            <tr><td>형제, 자매</td><td>재산 과표 1.8억 이하</td></tr>
+          </tbody>
+        </table>
+        <p>가장 많이 걸리는 곳은 재산 구간입니다. 과세표준이 5억 4천만 원을 넘으면 소득 한도가 절반인 1,000만 원으로 내려갑니다. 이때는 국민연금 월 84만 원 정도만 받아도 기준을 넘습니다. 반대로 재산이 5.4억 이하라면 연 2,000만 원, 월 166만 원까지는 소득만으로는 탈락하지 않습니다.</p>
+        <h3>자료는 11월과 1월에 바뀝니다</h3>
+        <p>공단은 11월에 전년도 소득자료와 그해 6월 1일 기준 재산 자료를 새로 반영하고, 연금소득만 1월에 갱신합니다. 그래서 매년 11월과 1월에 자격이 다시 심사됩니다. 지금 통과했다고 내년에도 그대로라고 볼 수 없고, 소득이 줄었다면 공단에 자료를 제출해 다시 심사를 요청할 수 있습니다.</p>
+      </div>
+      <aside class="related"><h2>더 자세히 알아보기</h2><ul><li><a href="/guide/dependent-income-criteria">건강보험 피부양자 소득 기준 2,000만 원, 무엇을 합산하나요</a></li><li><a href="/guide/dependent-property-criteria">피부양자 재산 기준: 재산세 과세표준 5.4억, 9억의 의미</a></li><li><a href="/guide/voluntary-continuation">퇴직 후 건강보험 임의계속가입: 신청 조건, 기한, 따져볼 점</a></li></ul></aside>
+    </section>
+
+    <!-- ══════════════ 탭 3 ══════════════ -->
+    <section class="panel" id="tab-medical" role="tabpanel" aria-labelledby="tabbtn-medical" tabindex="0">
+      <div class="card">
+        <h2>병원비 본인부담상한제 환급 체크</h2>
+        <p class="lead">1년 동안 낸 건강보험 본인부담금이 내 소득분위 상한액을 넘으면, 넘는 금액을 건강보험공단이 돌려줍니다. 얼마를 돌려받을지 미리 계산해 볼 수 있습니다.</p>
+
+        <div class="field">
+          <label for="bracket">내 건강보험료 분위</label>
+          <select id="bracket">
+            <option value="1">1분위 (하위 10%)</option>
+            <option value="23" selected>2~3분위</option>
+            <option value="45">4~5분위</option>
+            <option value="67">6~7분위</option>
+            <option value="8">8분위</option>
+            <option value="9">9분위</option>
+            <option value="10">10분위 (상위 10%)</option>
+          </select>
+          <p class="hint">공단 앱, 누리집 ‘본인부담상한제’ 화면이나 고객센터(1577-1000)에서 확인할 수 있습니다. 모르면 4~5분위로 두고 보세요.</p>
+        </div>
+
+        <div class="field">
+          <label class="check" for="longStay">
+            <input type="checkbox" id="longStay">
+            <span>같은 해에 요양병원에 120일을 넘게 입원했습니다</span>
+          </label>
+          <p class="hint">요양병원 장기입원은 별도의 더 높은 상한액이 적용됩니다.</p>
+        </div>
+
+        <div class="field">
+          <label for="paidAmount">연간 급여 본인부담 의료비</label>
+          <div class="input-wrap">
+            <input id="paidAmount" type="number" inputmode="numeric" min="0" max="20000" step="10" value="300">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint">영수증의 ‘환자 부담 총액’ 중 <strong>급여</strong> 부분만 넣습니다. 비급여(도수치료, 상급병실 차액, 임플란트 등)는 상한제에 들어가지 않습니다.</p>
+        </div>
+
+        <button class="btn" id="calcMedicalBtn" type="button">환급 가능 금액 계산하기</button>
+      </div>
+
+      <div id="medicalResult" aria-live="polite"></div>
+
+      <div class="content">
+        <h2>본인부담상한제, 이렇게 작동합니다</h2>
+        <p>건강보험이 적용되는 진료를 받고 환자가 낸 본인일부부담금을 1월 1일부터 12월 31일까지 합산합니다. 그 합계가 내 소득분위의 상한액을 넘으면, 넘은 금액을 공단이 부담합니다. 병원을 여러 곳 다녀도 한 사람 기준으로 다 합쳐서 계산합니다.</p>
+        <table>
+          <thead><tr><th>분위</th><th>2026년 상한액</th><th>요양병원 120일 초과</th></tr></thead>
+          <tbody>
+            <tr><td>1분위</td><td>90만 원</td><td>143만 원</td></tr>
+            <tr><td>2~3분위</td><td>112만 원</td><td>181만 원</td></tr>
+            <tr><td>4~5분위</td><td>173만 원</td><td>245만 원</td></tr>
+            <tr><td>6~7분위</td><td>326만 원</td><td>404만 원</td></tr>
+            <tr><td>8분위</td><td>446만 원</td><td>580만 원</td></tr>
+            <tr><td>9분위</td><td>536만 원</td><td>698만 원</td></tr>
+            <tr><td>10분위</td><td>843만 원</td><td>1,096만 원</td></tr>
+          </tbody>
+        </table>
+        <h3>상한액에 들어가지 않는 돈</h3>
+        <p>비급여, 선별급여, 전액본인부담, 상급병실(2인실과 3인실) 입원료 차액, 임플란트, 추나요법, 간병비는 합계에서 빠집니다. 영수증 총액이 커도 급여 본인부담금이 적으면 환급액은 없습니다.</p>
+        <h3>언제 돌려받나요</h3>
+        <p>한 병원에 낸 본인부담이 연 843만 원을 넘으면 병원이 공단에 바로 청구하는 사전급여가 되고, 개인 누적액이 1,096만 원을 넘으면 공단이 매월 계산해 지급합니다. 그 밖의 경우에는 다음 해 8월 말부터 개인별 상한액이 확정되어 정산 지급됩니다. 공단이 대상자에게 안내하면 The건강보험 앱, 공단 누리집, 1577-1000에서 계좌를 등록해 신청합니다. 안내를 받고 3년 안에 신청하지 않으면 권리가 사라집니다.</p>
+      </div>
+      <aside class="related"><h2>더 자세히 알아보기</h2><ul><li><a href="/guide/medical-cap-2026">본인부담상한제 2026년 상한액 표와 환급액 계산법</a></li><li><a href="/guide/medical-cap-exclusions">본인부담상한제에서 빠지는 비용: 비급여, 선별급여, 상급병실</a></li><li><a href="/guide/medical-refund-how-to">본인부담상한제 환급금 조회와 신청 방법, 사전급여 정리</a></li></ul></aside>
+    </section>
+
+    <!-- ══════════════ 공통 콘텐츠 ══════════════ -->
+    <div class="content" id="examples">
+      <h2>실제 숫자로 보기</h2>
+      <p>계산기가 내놓는 결과가 어떤 모양인지, 흔한 경우 네 가지로 미리 보겠습니다.</p>
+      <h3>1. 1965년생, 월 100만 원, 5년 조기수령</h3>
+      <p>정상 수령은 만 64세, 조기수령은 만 59세부터입니다. 월액은 70만 원으로 줄지만 5년에 4,200만 원을 먼저 받습니다. 이 돈을 매달 30만 원씩 덜 받는 것으로 되돌리는 데 140개월이 걸려, <strong>만 75세 8개월</strong>이 손익분기 나이입니다.</p>
+      <h3>2. 1962년생, 월 150만 원, 3년 조기수령</h3>
+      <p>정상 수령은 만 63세, 조기수령은 만 60세부터입니다. 월액은 123만 원, 먼저 받는 돈은 4,428만 원입니다. 매달 27만 원씩 덜 받으므로 회수에 164개월, <strong>만 76세 8개월</strong>이 갈림길입니다.</p>
+      <h3>3. 재산 과표 6억, 연 소득 1,200만 원</h3>
+      <p>재산세 과세표준이 5억 4천만 원을 넘으면 소득 한도가 연 1,000만 원으로 내려갑니다. 국민연금을 월 100만 원 받아 연 1,200만 원이 되면 이 기준을 넘어 <strong>피부양자에서 탈락</strong>합니다. 재산이 5.4억 이하인 사람이라면 같은 소득으로도 통과합니다.</p>
+      <h3>4. 4~5분위, 급여 본인부담 500만 원</h3>
+      <p>2026년 4~5분위 상한액은 173만 원입니다. 500만 원을 냈다면 173만 원을 넘는 <strong>327만 원</strong>이 환급 대상입니다. 단, 이 500만 원은 비급여를 뺀 급여 본인부담금이어야 합니다.</p>
+    </div>
+
+    <div class="content" id="faq">
+      <h2>자주 묻는 질문</h2>
+
+      <details>
+        <summary>국민연금 5년 조기수령은 정말 30% 손해인가요?</summary>
+        <div class="body">
+          <p>받는 금액만 보면 30% 줄어드는 것이 맞습니다. 하지만 5년 동안 먼저 받는 돈이 5년치(정상액의 350%)나 됩니다. 정상 수령액이 월 100만 원이면 5년에 4,200만 원을 먼저 받고, 그 뒤 매달 30만 원씩 덜 받습니다. 이 차액이 4,200만 원을 따라잡는 시점이 정상 수령 나이(65세) 기준 만 76세 8개월 무렵입니다. 그 전에 생을 마감하면 조기수령이, 그 뒤까지 사시면 정상 수령이 유리합니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>손익분기 나이는 어떻게 계산하나요?</summary>
+        <div class="body">
+          <p>(앞당긴 개월 수 × 조기수령 월액) ÷ (정상 월액 − 조기 월액)으로 개월 수를 구하고, 정상 수령 나이에 더합니다. 1년 앞당기면 12개월 × 94만 원 ÷ 6만 원 = 188개월(15년 8개월), 3년이면 164개월, 5년이면 140개월(11년 8개월)입니다. 앞당기는 기간이 길수록 회수 시점이 빨라집니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>조기수령 중에 일하면 연금이 멈추나요?</summary>
+        <div class="body">
+          <p>네. 조기노령연금을 받는 중에 ‘소득이 있는 업무’에 종사하면 그 기간은 지급이 정지됩니다. 2026년 기준 판단 기준은 월평균소득금액이 A값 319만 3,511원을 넘는지입니다. 여기서 소득은 통장에 찍힌 월급이 아니라 근로소득금액과 사업소득금액을 그해 종사 개월 수로 나눈 금액입니다.</p>
+          <p>2026년 6월 17일부터 정상 수령자의 감액 기준은 A값+200만 원(519만 3,511원)으로 올라갔지만, 조기수령 중 지급정지 기준은 A값 그대로입니다. 재취업 계획이 있다면 공단(1355)에서 본인 소득이 어디에 걸리는지 먼저 확인하세요.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>조기수령을 나중에 취소하고 정상 수령으로 돌릴 수 있나요?</summary>
+        <div class="body">
+          <p>받기 시작한 조기노령연금의 지급률은 정상 나이가 되어도 되돌아오지 않습니다. 대신 정상 수령을 5년 연기하면 1년에 7.2%, 최대 36%를 더 받는 연기연금을 선택할 수 있습니다. 연기 기간에는 연금이 나오지 않으므로, 그 기간을 버틸 다른 소득이 있는지가 판단 기준입니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>건강보험 피부양자는 연금을 얼마까지 받아도 되나요?</summary>
+        <div class="body">
+          <p>재산세 과세표준이 5억 4천만 원 이하라면 연 소득 합계 2,000만 원(월 약 166만 원)까지 가능합니다. 과세표준이 5.4억을 넘고 9억 이하라면 기준이 연 1,000만 원(월 약 83만 원)으로 내려갑니다. 9억을 넘으면 소득과 관계없이 피부양자가 될 수 없습니다. 공적연금은 세금 공제 전 받은 금액 전부를 합산합니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>사업자등록만 있으면 무조건 탈락인가요?</summary>
+        <div class="body">
+          <p>등록 자체가 아니라 사업소득이 문제입니다. 사업자등록이 있으면 사업소득이 1원이라도 발생한 해에 탈락합니다. 사업소득이 없으면 소득 요건은 통과합니다. 반대로 등록이 없어도 사업소득이 연 500만 원을 넘으면 탈락하고, 주택임대소득은 등록 여부나 금액과 관계없이 탈락 사유가 됩니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>피부양자에서 탈락하면 보험료가 얼마나 오르나요?</summary>
+        <div class="body">
+          <p>지역가입자로 전환되어 소득과 재산을 기준으로 보험료를 냅니다. 금액은 재산 규모와 소득에 따라 크게 달라 개인별 확인이 필요합니다. 직장가입자였던 분이 퇴직 후 지역가입자가 되면서 보험료가 오르는 경우에는, 공단에 신청해 퇴직 전 보험료로 최대 3년까지 내는 임의계속가입제도를 쓸 수 있습니다. 신청 기한과 요건은 공단(1577-1000)에 확인하세요.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>어떤 병원비가 본인부담상한제에 합산되나요?</summary>
+        <div class="body">
+          <p>건강보험이 적용되는 급여 진료의 본인일부부담금만 합산합니다. 비급여, 선별급여, 전액본인부담, 상급병실(2인실과 3인실) 입원료 차액, 임플란트, 추나요법, 간병비는 빠집니다. 영수증의 총 결제액이 아니라 급여 항목의 환자 부담분을 기준으로 보세요.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>환급금은 언제, 어떻게 받나요?</summary>
+        <div class="body">
+          <p>진료 다음 해 8월 말부터 개인별 상한액이 확정되어 정산 지급됩니다. 한 병원에 낸 금액이 843만 원을 넘으면 사전급여로 병원이 바로 청구하고, 개인 누적액이 1,096만 원을 넘으면 매월 지급됩니다. 공단 안내를 받으면 앱, 누리집, 1577-1000에서 계좌를 등록해 신청해야 하며, 3년 안에 신청하지 않으면 권리가 사라집니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>계산 결과와 실제 고지서가 다른 이유는 무엇인가요?</summary>
+        <div class="body">
+          <p>이 계산기는 2026년 11월 기준 공개된 기준값으로 모의 계산합니다. 실제 금액은 가입기간 중 소득 이력, 부양가족 수, 재산 변동, 공단이 반영하는 소득, 재산 자료 시점(11월, 1월)에 따라 달라집니다. 정확한 금액은 국민연금공단(1355), 국민건강보험공단(1577-1000)에서 확인하세요.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="content" id="standards">
+      <h2>계산에 쓴 기준값</h2>
+      <table class="t-text">
+        <thead><tr><th>항목</th><th>적용 값</th></tr></thead>
+        <tbody>
+          <tr><td>국민연금 A값 (2026)</td><td>월 3,193,511원</td></tr>
+          <tr><td>정상 수령 후 소득 감액 기준 (2026.6.17~)</td><td>A값+200만 원 = 월 5,193,511원</td></tr>
+          <tr><td>조기수령 감액률</td><td>1년 6% (5년 30%, 지급률 70~94%)</td></tr>
+          <tr><td>연기 가산률</td><td>1년 7.2% (5년 36%)</td></tr>
+          <tr><td>수급 개시연령</td><td>1961~64년생 63세, 1965~68년생 64세, 1969년생 이후 65세</td></tr>
+          <tr><td>피부양자 소득 기준</td><td>연 2,000만 원 (재산 과표 5.4억 초과 시 연 1,000만 원)</td></tr>
+          <tr><td>피부양자 재산 기준</td><td>과세표준 5.4억 이하 / 5.4억~9억 + 소득 1,000만 원 이하 / 9억 초과 탈락</td></tr>
+          <tr><td>본인부담상한액 (2026)</td><td>90만 ~ 843만 원 (요양병원 120일 초과 143만 ~ 1,096만 원)</td></tr>
+          <tr><td>기대수명 (2024 생명표)</td><td>남 80.8세, 여 86.6세, 전체 83.7세</td></tr>
+        </tbody>
+      </table>
+      <p class="src">확인 기준일 2026년 11월 22일. 출처: 보건복지부 국민연금 급여 안내, 국민연금공단 A값, 조기노령연금 안내, 국민건강보험법 시행규칙 별표 1의2, 국민건강보험공단 2026년도 본인부담상한액 안내(대한병원협회 공지 2026.1.13.), 국가데이터처 2024년 생명표.</p>
+    </div>
+
+    <div class="content" id="privacy">
+      <h2>개인정보 처리 안내</h2>
+      <p>계산기는 <strong>이용자의 브라우저 안에서만</strong> 동작합니다. 입력한 출생연도, 소득, 재산 구간, 의료비 금액은 서버로 보내거나 저장하지 않습니다.</p>
+      <p>이 사이트는 구글 애드센스 등 제3자 광고를 게재할 수 있으며, 광고 사업자가 쿠키를 사용해 맞춤 광고를 보여 줄 수 있습니다. 자세한 내용은 <a href="/privacy">개인정보처리방침</a>을 확인하세요.</p>
+      <p>문의: 알려드림 블로그(<a href="https://blog.naver.com/ljh6983" rel="noopener">blog.naver.com/ljh6983</a>), 이메일(<a href="mailto:ljh4466983@gmail.com">ljh4466983@gmail.com</a>)</p>
+    </div>
+
+    <div class="content" id="disclaimer">
+      <h2>면책 안내</h2>
+      <p>이 사이트의 모든 결과는 <strong>모의 계산</strong>입니다. 법령, 고시, 공단 기준은 매년, 때로는 연중에도 바뀝니다. 실제 수령액과 자격, 환급액은 국민연금공단(1355)과 국민건강보험공단(1577-1000)에서 확인하세요. 이 계산 결과를 근거로 한 신청, 계약, 투자 판단의 책임은 이용자에게 있습니다.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <strong>연금건보 체크</strong>
+    <p>5060 세대를 위한 무료 계산기, 2026년 11월 기준<br>모의 계산이며 실제 수치는 국민연금공단, 건강보험공단에서 확인하세요.</p>
+    <nav aria-label="하단 메뉴"><a href="/#tab-pension">국민연금 조기수령</a><a href="/#tab-insurance">피부양자 진단</a><a href="/#tab-medical">병원비 환급</a><a href="/guide">가이드</a><a href="/about">소개</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav>
+    <div class="disclaimer">
+      이 페이지의 계산 결과는 참고용입니다. 국민연금, 건강보험 제도는 개인별 가입 이력과 공단이 반영하는 자료에 따라 결과가 달라지므로, 신청 전 반드시 공단에 확인하시기 바랍니다.
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"5060 연금, 건보료 계산기",
+      "url":"https://pension-check.vercel.app/",
+      "applicationCategory":"FinanceApplication",
+      "operatingSystem":"All",
+      "inLanguage":"ko-KR",
+      "description":"국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 본인부담상한제 환급액을 2026년 기준으로 계산하는 무료 웹 계산기입니다.",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+      "featureList":["국민연금 조기수령 손익분기 계산","건강보험 피부양자 자가진단","본인부담상한제 환급액 계산"]
+    },
+    {
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"국민연금 5년 조기수령은 정말 30% 손해인가요?","acceptedAnswer":{"@type":"Answer","text":"받는 금액은 30% 줄지만 5년 동안 먼저 받는 돈이 정상액의 350%입니다. 월 100만 원 기준이면 5년에 4,200만 원을 먼저 받고 이후 매달 30만 원씩 덜 받아, 정상 수령 나이 65세 기준 만 76세 8개월 무렵 누적액이 역전됩니다."}},
+        {"@type":"Question","name":"조기수령 중에 일하면 연금이 멈추나요?","acceptedAnswer":{"@type":"Answer","text":"조기노령연금 수령 중 소득이 있는 업무에 종사하면 그 기간 지급이 정지됩니다. 2026년 기준 월평균소득금액이 A값 319만 3,511원을 넘는지로 판단하며, 정상 수령 후 감액 기준인 A값+200만 원(519만 3,511원)과는 다릅니다."}},
+        {"@type":"Question","name":"건강보험 피부양자는 연금을 얼마까지 받아도 되나요?","acceptedAnswer":{"@type":"Answer","text":"재산세 과세표준이 5억 4천만 원 이하이면 연 소득 2,000만 원까지 가능하고, 5.4억 초과 9억 이하이면 연 1,000만 원 이하일 때만 인정됩니다. 9억을 넘으면 소득과 무관하게 탈락합니다."}},
+        {"@type":"Question","name":"본인부담상한제는 어떤 병원비가 합산되나요?","acceptedAnswer":{"@type":"Answer","text":"건강보험이 적용되는 급여 진료의 본인일부부담금만 합산합니다. 비급여, 선별급여, 전액본인부담, 상급병실료 차액, 임플란트, 추나요법, 간병비는 제외됩니다."}},
+        {"@type":"Question","name":"본인부담상한제 환급금은 언제 받나요?","acceptedAnswer":{"@type":"Answer","text":"진료 다음 해 8월 말부터 개인별 상한액이 확정되어 정산 지급됩니다. 한 병원 납부액이 843만 원을 넘으면 사전급여, 개인 누적액이 1,096만 원을 넘으면 매월 지급됩니다."}}
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ───────── 기준값 (2026년) ───────── */
+  var A_VALUE = 3193511;          // 국민연금 A값
+  var A_PLUS_200 = 5193511;       // 정상 수령 후 감액 기준
+  var EARLY_RATE = {1:0.94, 2:0.88, 3:0.82, 4:0.76, 5:0.70};
+  var CAP = {                     // 2026년 본인부담상한액
+    "1":  {normal:900000,  hospital:1430000, label:"1분위"},
+    "23": {normal:1120000, hospital:1810000, label:"2~3분위"},
+    "45": {normal:1730000, hospital:2450000, label:"4~5분위"},
+    "67": {normal:3260000, hospital:4040000, label:"6~7분위"},
+    "8":  {normal:4460000, hospital:5800000, label:"8분위"},
+    "9":  {normal:5360000, hospital:6980000, label:"9분위"},
+    "10": {normal:8430000, hospital:10960000, label:"10분위"}
+  };
+
+  /* ───────── 도우미 ───────── */
+  function won(n){ return Math.round(n).toLocaleString("ko-KR"); }
+
+  // 원 → "4억 2,000만 원" / "4,200만 원" / "12만 3,456원"
+  function pretty(w){
+    w = Math.round(w);
+    if (w >= 100000000){
+      var eok = Math.floor(w/100000000);
+      var man = Math.floor((w % 100000000)/10000);
+      var rest = w % 10000;
+      return eok + "억" + (man ? " " + man.toLocaleString("ko-KR") + "만" : "") + (rest ? " " + rest.toLocaleString("ko-KR") + "원" : " 원");
+    }
+    if (w >= 10000){
+      var m = Math.floor(w/10000);
+      var r = w % 10000;
+      return m.toLocaleString("ko-KR") + "만" + (r ? " " + r.toLocaleString("ko-KR") + "원" : " 원");
+    }
+    return w.toLocaleString("ko-KR") + "원";
+  }
+  // 표 안에서 짧게
+  function shortWon(w){
+    w = Math.round(w);
+    if (w === 0) return "0";
+    if (w >= 100000000){
+      var eok = Math.floor(w/100000000);
+      var man = Math.round((w % 100000000)/10000);
+      return eok + "억" + (man ? " " + man.toLocaleString("ko-KR") + "만" : "");
+    }
+    return Math.round(w/10000).toLocaleString("ko-KR") + "만";
+  }
+  function ageText(months){
+    var y = Math.floor(months/12), m = months % 12;
+    return "만 " + y + "세" + (m ? " " + m + "개월" : "");
+  }
+  function durationText(months){
+    var y = Math.floor(months/12), m = months % 12;
+    return (y ? y + "년 " : "") + (m ? m + "개월" : (y ? "" : "0개월"));
+  }
+  function num(v, def){ var n = parseFloat(v); return isFinite(n) ? n : (def||0); }
+
+  /* ───────── 탭 ───────── */
+  var tabButtons = Array.prototype.slice.call(document.querySelectorAll(".tabbtn"));
+  var panels = Array.prototype.slice.call(document.querySelectorAll(".panel"));
+
+  function activate(name, push){
+    tabButtons.forEach(function(b){
+      var on = b.getAttribute("data-tab") === name;
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      if (!on) b.setAttribute("tabindex","-1"); else b.removeAttribute("tabindex");
+    });
+    panels.forEach(function(p){
+      var on = p.id === "tab-" + name;
+      p.classList.toggle("is-active", on);
+      p.hidden = !on;
+    });
+    if (push && history.replaceState) history.replaceState(null, "", "#tab-" + name);
+    var target = document.getElementById("tab-" + name);
+    if (target) target.scrollIntoView({block:"start", behavior:"smooth"});
+  }
+
+  tabButtons.forEach(function(b){
+    b.addEventListener("click", function(){ activate(b.getAttribute("data-tab"), true); });
+  });
+  document.querySelectorAll("[data-goto]").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); activate(a.getAttribute("data-goto"), true); });
+  });
+
+  /* ═════════════ 탭 1 : 국민연금 ═════════════ */
+  var birthYear = document.getElementById("birthYear");
+  var normalPension = document.getElementById("normalPension");
+  var income = document.getElementById("income");
+  var earlySeg = document.getElementById("earlySeg");
+  var normalAgeHint = document.getElementById("normalAgeHint");
+  var pensionResult = document.getElementById("pensionResult");
+  var earlyYears = 5;
+
+  // 출생연도 옵션 (1950~1980)
+  var bySelect = birthYear;
+  for (var y = 1950; y <= 1980; y++){
+    var opt = document.createElement("option");
+    opt.value = String(y);
+    opt.textContent = y + "년생";
+    if (y === 1965) opt.selected = true;
+    bySelect.appendChild(opt);
+  }
+
+  function normalAgeFor(year){
+    if (year <= 1952) return 60;
+    if (year <= 1956) return 61;
+    if (year <= 1960) return 62;
+    if (year <= 1964) return 63;
+    if (year <= 1968) return 64;
+    return 65;
+  }
+
+  function updateNormalHint(){
+    var year = parseInt(birthYear.value, 10);
+    var age = normalAgeFor(year);
+    normalAgeHint.textContent = "정상 수령 나이: 만 " + age + "세, 조기수령은 만 " + (age-5) + "세부터 최대 5년";
+  }
+
+  earlySeg.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-years]");
+    if (!btn) return;
+    earlyYears = parseInt(btn.getAttribute("data-years"), 10);
+    Array.prototype.forEach.call(earlySeg.querySelectorAll("button"), function(b){
+      b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+    });
+    calcPension();
+  });
+
+  function deductionFor(monthlyIncome){ // 정상 수령 후 소득 감액(2026.6.17 개정)
+    if (monthlyIncome < A_PLUS_200) return 0;
+    if (monthlyIncome < 6193511) return 150000 + (monthlyIncome - A_PLUS_200) * 0.15;
+    if (monthlyIncome < 7193511) return 300000 + (monthlyIncome - 6193511) * 0.20;
+    return 500000 + (monthlyIncome - 7193511) * 0.25;
+  }
+
+  function calcPension(){
+    updateNormalHint();
+    var year = parseInt(birthYear.value, 10);
+    var normalAge = normalAgeFor(year);
+    var P = num(normalPension.value, 0) * 10000;
+    if (P <= 0){ pensionResult.innerHTML = ""; return; }
+
+    var rate = EARLY_RATE[earlyYears];
+    var earlyM = Math.round(P * rate);
+    var startAge = normalAge - earlyYears;
+    var diff = P - earlyM;
+
+    // 손익분기 : 정상 수령 후 몇 개월 뒤 역전
+    var beMonths = diff > 0 ? Math.round((earlyYears*12*earlyM)/diff) : 0;
+    var beAgeMonths = normalAge*12 + beMonths;
+
+    // 나이별 누적
+    var ages = [70, 75, 80, 85];
+    var rows = ages.map(function(age){
+      var eMonths = Math.max(0, (age - startAge) * 12);
+      var nMonths = age >= normalAge ? (age - normalAge) * 12 : 0;
+      var eTotal = eMonths * earlyM;
+      var nTotal = nMonths * P;
+      return {age:age, early:eTotal, normal:nTotal, diff:eTotal - nTotal};
+    });
+    var maxTotal = Math.max.apply(null, rows.map(function(r){ return Math.max(r.early, r.normal); })) || 1;
+
+    var html = "";
+    html += '<div class="result">';
+    html += '<h3>계산 결과</h3>';
+
+    html += '<div class="duo">';
+    html += '<div class="mini"><p class="k">' + earlyYears + '년 앞당긴 조기수령</p>';
+    html += '<p class="v" style="color:#a86000">월 ' + pretty(earlyM) + '</p>';
+    html += '<p class="s">만 ' + startAge + '세부터, 정상액의 ' + Math.round(rate*100) + '%</p></div>';
+    html += '<div class="mini"><p class="k">정상 수령</p>';
+    html += '<p class="v" style="color:#1749b8">월 ' + pretty(P) + '</p>';
+    html += '<p class="s">만 ' + normalAge + '세부터, 100%</p></div>';
+    html += '</div>';
+
+    html += '<div class="big">';
+    html += '<p class="k">누적 수령액이 역전되는 나이</p>';
+    html += '<p class="v">' + ageText(beAgeMonths) + ' 무렵</p>';
+    html += '<p class="s">정상 수령을 시작한 뒤 ' + durationText(beMonths) + '이 지나면 누적액이 역전됩니다.<br>그 전까지는 <strong>조기수령</strong>, 이후로는 <strong>정상 수령</strong>이 유리합니다.</p>';
+    html += '</div>';
+    html += '<p class="hint" style="margin:10px 0 0">2024년 생명표 기준 기대수명은 남자 80.8세, 여자 86.6세입니다. 손익분기 나이가 이보다 이르면 평균 수명까지는 조기수령이, 늦으면 정상 수령이 유리한 쪽에 가깝습니다.</p>';
+
+    // 표
+    html += '<div class="tablewrap" style="margin-top:18px"><table class="t-compact">';
+    html += '<caption>만 나이별 누적 수령액 (단위: 만 원, 물가, 세금 제외)</caption>';
+    html += '<thead><tr><th>나이</th><th>조기수령</th><th>정상 수령</th><th>차액</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      var cls = r.diff >= 0 ? "pos" : "neg";
+      var sign = r.diff > 0 ? "+" : (r.diff < 0 ? "−" : "");
+      html += '<tr><td><strong>' + r.age + '세</strong></td>';
+      html += '<td>' + shortWon(r.early) + '</td>';
+      html += '<td>' + shortWon(r.normal) + '</td>';
+      html += '<td class="' + cls + '">' + sign + shortWon(Math.abs(r.diff)) + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // 막대
+    html += '<div class="bars">';
+    html += '<div class="legend"><span><i class="bar-early" style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#e08b1f;margin-right:5px"></i>조기수령(' + earlyYears + '년)</span>';
+    html += '<span><i style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#1749b8;margin-right:5px"></i>정상 수령</span></div>';
+    rows.forEach(function(r){
+      html += '<p class="agediv">' + r.age + '세까지 누적</p>';
+      html += '<div class="barline"><span class="barname">조기</span><div class="bartrack"><div class="barfill bar-early" style="width:' + (r.early/maxTotal*100).toFixed(1) + '%"></div></div><span class="barval">' + shortWon(r.early) + '</span></div>';
+      html += '<div class="barline"><span class="barname">정상</span><div class="bartrack"><div class="barfill bar-normal" style="width:' + (r.normal/maxTotal*100).toFixed(1) + '%"></div></div><span class="barval">' + shortWon(r.normal) + '</span></div>';
+    });
+    html += '</div>';
+
+    // 소득 안내
+    var monthlyIncome = num(income.value, 0) * 10000;
+    if (monthlyIncome > 0){
+      if (monthlyIncome > A_VALUE){
+        html += '<div class="note danger"><p><strong>지금 소득으로는 조기수령을 받을 수 없습니다.</strong> 조기노령연금은 ‘소득이 있는 업무’에 종사하지 않아야 하는데, 월평균소득금액 ' + pretty(monthlyIncome) + '은 2026년 기준 A값 ' + pretty(A_VALUE) + '을 넘습니다.</p>';
+        html += '<p>조기수령 중 소득이 이 기준을 넘으면 그 기간 지급이 정지되므로, 소득이 줄어든 뒤에 신청하는 편이 낫습니다.</p></div>';
+      } else {
+        html += '<div class="note ok"><p><strong>조기수령 가능 범위의 소득입니다.</strong> 월평균소득금액 ' + pretty(monthlyIncome) + '은 A값 ' + pretty(A_VALUE) + ' 이하입니다.</p>';
+        html += '<p>다만 수령 중 소득이 A값을 넘으면 그 기간은 지급이 정지됩니다.</p></div>';
+      }
+
+      var ded = deductionFor(monthlyIncome);
+      if (ded > 0){
+        var capped = Math.min(ded, P * 0.5);
+        html += '<div class="note warn"><p><strong>정상 수령 후 소득이 있다면 월 ' + pretty(capped) + ' 정도 감액될 수 있습니다.</strong></p>';
+        html += '<p>2026년 6월 17일부터 감액 기준이 A값+200만 원(월 ' + pretty(A_PLUS_200) + ')으로 올라갔습니다. 이 기준을 넘는 소득에 대해 구간별로 감액되며, 최대 50% 한도입니다.</p></div>';
+      } else {
+        html += '<div class="note"><p>정상 수령 이후에도 소득이 월 ' + pretty(A_PLUS_200) + ' 미만이면 감액 없이 전액 받습니다(2026.6.17 개정).</p></div>';
+      }
+    }
+
+    html += '<p class="hint" style="margin-top:14px">물가상승률, 연금소득세, 건강보험료는 반영하지 않은 단순 비교입니다. 실제 금액은 국민연금공단(1355)에서 확인하세요.</p>';
+    html += '</div>';
+    pensionResult.innerHTML = html;
+  }
+
+  /* ═════════════ 탭 2 : 피부양자 ═════════════ */
+  var relation = document.getElementById("relation");
+  var property = document.getElementById("property");
+  var bizIncome = document.getElementById("bizIncome");
+  var totalIncome = document.getElementById("totalIncome");
+  var rental = document.getElementById("rental");
+  var insuranceResult = document.getElementById("insuranceResult");
+
+  function bizValue(){
+    var checked = document.querySelector('input[name="biz"]:checked');
+    return checked ? checked.value : "no";
+  }
+  function syncRadios(){
+    document.querySelectorAll(".radio").forEach(function(l){
+      var i = l.querySelector("input");
+      l.classList.toggle("is-on", i.checked);
+    });
+  }
+  document.getElementById("bizRadios").addEventListener("change", function(){ syncRadios(); calcInsurance(); });
+  rental.addEventListener("change", function(){
+    rental.closest(".check").classList.toggle("is-on", rental.checked);
+    calcInsurance();
+  });
+
+  function calcInsurance(){
+    var rel = relation.value;
+    var prop = property.value;
+    var hasBiz = bizValue() === "yes";
+    var biz = num(bizIncome.value, 0) * 10000;
+    var total = num(totalIncome.value, 0) * 10000;
+    var hasRental = rental.checked;
+
+    var fails = [], warns = [], tips = [];
+
+    // 1) 재산 요건
+    if (rel === "sibling"){
+      if (prop !== "low") fails.push("형제, 자매는 재산세 과세표준 1억 8천만 원 이하일 때만 피부양자가 될 수 있는데, 입력하신 재산 구간이 이를 넘습니다.");
+    } else {
+      if (prop === "high") fails.push("재산세 과세표준이 9억 원을 넘으면 소득과 관계없이 피부양자가 될 수 없습니다.");
+      if (prop === "mid" && total > 10000000) fails.push("재산세 과세표준이 5억 4천만 원을 넘으면 연 소득 1,000만 원 이하일 때만 인정됩니다. 입력하신 소득 " + pretty(total) + "은 이 기준을 넘습니다.");
+      if (prop === "mid" && total <= 10000000) warns.push("재산 과표가 5.4억을 넘는 구간이라 소득 한도가 연 1,000만 원으로 낮아졌습니다. 소득이 1,000만 원을 넘는 순간 탈락합니다.");
+    }
+
+    // 2) 사업소득 요건
+    if (hasBiz && biz > 0) fails.push("사업자등록이 있는 상태에서 사업소득이 발생하면 금액과 관계없이 탈락합니다(입력 사업소득 " + pretty(biz) + ").");
+    if (hasBiz && biz === 0) warns.push("지금 사업소득이 0이어도, 사업자등록이 있으면 사업소득이 1원이라도 잡히는 해에 탈락합니다.");
+    if (!hasBiz && biz > 5000000) fails.push("사업자등록이 없어도 사업소득이 연 500만 원을 넘으면 탈락합니다(입력 " + pretty(biz) + ").");
+    if (!hasBiz && biz > 0 && biz <= 5000000) warns.push("사업자등록이 없고 사업소득이 연 500만 원 이하라 지금은 인정됩니다. 다만 500만 원을 넘으면 바로 탈락합니다.");
+
+    // 3) 주택임대소득
+    if (hasRental) fails.push("주택임대소득이 있으면 사업자등록 여부, 금액과 관계없이 피부양자에서 제외됩니다.");
+
+    // 4) 소득 합계
+    if (total > 20000000) fails.push("연간 소득 합계 " + pretty(total) + "이 기준(연 2,000만 원)을 넘습니다.");
+
+    // 근접 경고
+    if (fails.length === 0){
+      if (total >= 18000000) warns.push("연 소득이 1,800만 원을 넘어 2,000만 원 기준에 가깝습니다. 연금 인상, 이자, 배당 증가로 넘어설 수 있습니다.");
+      if (rel !== "sibling" && prop === "low" && total > 0 && total <= 10000000) {
+        // 정보성
+      }
+    } else if (warns.length === 0 && fails.length === 1){
+      // 단일 사유
+    }
+
+    var status, cls, title, summary;
+    if (fails.length > 0){
+      status = "danger"; cls = "danger"; title = "탈락 가능성이 높습니다";
+      summary = "입력하신 조건 중 " + fails.length + "가지가 피부양자 기준을 벗어납니다. 지역가입자로 전환되어 소득, 재산 기준 보험료를 내게 됩니다.";
+    } else if (warns.length > 0){
+      status = "warn"; cls = "warn"; title = "유지 가능하지만 주의가 필요합니다";
+      summary = "지금 입력값으로는 요건을 충족합니다. 다만 아래 항목 때문에 다음 심사에서 결과가 바뀔 수 있습니다.";
+    } else {
+      status = "ok"; cls = "ok"; title = "피부양자 유지가 가능합니다";
+      summary = "입력하신 소득, 재산, 사업소득 조건으로는 피부양자 요건을 충족합니다.";
+    }
+
+    // 대응 팁
+    if (fails.length > 0){
+      tips.push("<strong>소득이 줄었다면 다시 심사를 요청하세요.</strong> 공단은 11월에 소득, 재산 자료를, 1월에 연금소득을 갱신합니다. 소득이 기준 아래로 내려가면 자격을 다시 신청할 수 있습니다.");
+      tips.push("<strong>임의계속가입제도</strong>: 직장가입자였던 분이 퇴직 후 지역가입자가 되면서 보험료가 오르는 경우, 공단에 신청하면 퇴직 전 보험료로 최대 3년까지 낼 수 있습니다(요건, 신청 기한은 공단 확인).");
+      tips.push("<strong>연금 수령 시점 조정</strong>: 국민연금 개시를 늦추거나 연기하면 그해 연금소득이 줄어 소득 기준을 맞출 수 있습니다. 다만 연기에는 다른 소득이 필요합니다.");
+      tips.push("<strong>금융소득 확인</strong>: 이자, 배당은 합계 1,000만 원 이하이면 합산에서 빼는 것이 원칙이고, 넘으면 전액이 합산됩니다. 예금 만기, 배당 시점을 조정하면 총소득이 달라질 수 있습니다.");
+    } else {
+      tips.push("<strong>11월과 1월을 기억하세요.</strong> 11월에는 전년도 소득과 6월 1일 기준 재산이, 1월에는 연금소득이 새로 반영되어 자격이 다시 심사됩니다.");
+      tips.push("<strong>부부 모두 충족해야 합니다.</strong> 기혼자는 배우자도 같은 소득 요건을 통과해야 피부양자로 인정됩니다.");
+      tips.push("<strong>재산은 과세표준 기준입니다.</strong> 시세나 공시가격이 아니라 재산세 고지서의 과세표준 합계로 판단합니다.");
+    }
+
+    var html = '<div class="result">';
+    html += '<h3>진단 결과</h3>';
+    html += '<span class="badge ' + cls + '">' + title + '</span>';
+    html += '<p class="verdict">' + summary + '</p>';
+
+    if (fails.length > 0){
+      html += '<div class="note danger"><p><strong>탈락 사유</strong></p><ul>';
+      fails.forEach(function(f){ html += "<li>" + f + "</li>"; });
+      html += "</ul></div>";
+    }
+    if (warns.length > 0){
+      html += '<div class="note warn"><p><strong>주의할 점</strong></p><ul>';
+      warns.forEach(function(w){ html += "<li>" + w + "</li>"; });
+      html += "</ul></div>";
+    }
+    html += '<div class="note"><p><strong>지금 할 수 있는 일</strong></p><ul>';
+    tips.forEach(function(t){ html += "<li>" + t + "</li>"; });
+    html += "</ul></div>";
+
+    // 요약 표
+    html += '<div class="tablewrap" style="margin-top:16px"><table class="t-compact">';
+    html += '<caption>입력값과 기준 비교</caption>';
+    html += '<thead><tr><th>항목</th><th>내 값</th><th>기준</th></tr></thead><tbody>';
+    html += '<tr><td>소득 합계</td><td>' + (total === 0 ? "0원" : shortWon(total) + ' 원') + '</td><td>' + (prop === "mid" && rel !== "sibling" ? "1,000만" : "2,000만") + '</td></tr>';
+    html += '<tr><td>사업소득</td><td>' + (biz === 0 ? "0원" : shortWon(biz) + ' 원') + '</td><td>' + (hasBiz ? "0원" : "500만") + '</td></tr>';
+    html += '<tr><td>재산 과세표준</td><td>' + (prop === "low" ? "5.4억 이하" : prop === "mid" ? "5.4억~9억" : "9억 초과") + '</td><td>' + (rel === "sibling" ? "1.8억 이하" : prop === "mid" ? "1,000만 원 소득" : "5.4억 이하") + '</td></tr>';
+    html += '<tr><td>주택임대소득</td><td>' + (hasRental ? "있음" : "없음") + '</td><td>없어야 함</td></tr>';
+    html += '</tbody></table></div>';
+
+    html += '<p class="hint" style="margin-top:12px">공단이 실제로 보는 소득은 국세청 자료 기준입니다. 이 진단은 입력값을 기준으로 한 안내이며, 최종 판정은 국민건강보험공단(1577-1000)에서 확인하세요.</p>';
+    html += '</div>';
+    insuranceResult.innerHTML = html;
+  }
+
+  /* ═════════════ 탭 3 : 본인부담상한제 ═════════════ */
+  var bracket = document.getElementById("bracket");
+  var longStay = document.getElementById("longStay");
+  var paidAmount = document.getElementById("paidAmount");
+  var medicalResult = document.getElementById("medicalResult");
+
+  longStay.addEventListener("change", function(){
+    longStay.closest(".check").classList.toggle("is-on", longStay.checked);
+    calcMedical();
+  });
+
+  function calcMedical(){
+    var b = CAP[bracket.value];
+    var cap = longStay.checked ? b.hospital : b.normal;
+    var paid = num(paidAmount.value, 0) * 10000;
+    var refund = Math.max(0, paid - cap);
+
+    var html = '<div class="result">';
+    html += '<h3>계산 결과</h3>';
+    html += '<div class="duo">';
+    html += '<div class="mini"><p class="k">' + b.label + ' 상한액' + (longStay.checked ? ' (요양병원 120일 초과)' : '') + '</p>';
+    html += '<p class="v">' + pretty(cap) + '</p>';
+    html += '<p class="s">2026년 1월 1일~12월 31일 진료분</p></div>';
+    html += '<div class="mini"><p class="k">예상 환급액</p>';
+    html += '<p class="v" style="color:' + (refund > 0 ? '#0d6b3d' : '#4e5666') + '">' + pretty(refund) + '</p>';
+    html += '<p class="s">' + (refund > 0 ? '상한액을 넘은 금액' : '상한액 이내') + '</p></div>';
+    html += '</div>';
+
+    if (refund > 0){
+      html += '<div class="big" style="background:#e4f5ec"><p class="k" style="color:#0d6b3d">환급 가능성이 있습니다</p>';
+      html += '<p class="v" style="color:#0d6b3d">' + pretty(refund) + '</p>';
+      html += '<p class="s">낸 급여 본인부담 ' + pretty(paid) + ' − 상한액 ' + pretty(cap) + '<br>다음 해 8월 말부터 정산 지급됩니다.</p></div>';
+    } else {
+      html += '<div class="big"><p class="k">아직 상한액을 넘지 않았습니다</p>';
+      html += '<p class="v">' + pretty(cap - paid) + ' 남음</p>';
+      html += '<p class="s">연말까지 이 금액을 더 쓰면 그 초과분부터 환급 대상이 됩니다.</p></div>';
+    }
+
+    html += '<div class="note warn"><p><strong>영수증 총액으로 계산하면 안 됩니다.</strong> 비급여(도수치료, 상급병실 차액, 임플란트, 추나요법, 간병비)와 선별급여, 전액본인부담은 상한제 합계에서 빠집니다. 급여 항목의 환자 부담분만 넣으세요.</p></div>';
+
+    if (paid >= 8430000){
+      html += '<div class="note"><p>한 병원에 낸 본인부담이 843만 원을 넘으면 <strong>사전급여</strong>로 병원이 공단에 바로 청구합니다. 개인 누적액이 1,096만 원을 넘으면 공단이 매월 계산해 지급합니다.</p></div>';
+    }
+
+    html += '<p class="hint" style="margin-top:12px">내 분위는 공단 앱, 누리집의 본인부담상한제 화면이나 고객센터(1577-1000)에서 확인할 수 있습니다. 실제 상한액은 진료 다음 해 8월에 확정됩니다.</p>';
+    html += '</div>';
+    medicalResult.innerHTML = html;
+  }
+
+  /* ═════════════ 이벤트 연결 ═════════════ */
+  birthYear.addEventListener("change", calcPension);
+  normalPension.addEventListener("input", calcPension);
+  income.addEventListener("input", calcPension);
+  document.getElementById("calcPensionBtn").addEventListener("click", function(){
+    calcPension();
+    var r = pensionResult.querySelector(".result");
+    if (r) r.scrollIntoView({block:"start", behavior:"smooth"});
+  });
+
+  [relation, property, bizIncome, totalIncome].forEach(function(el){
+    el.addEventListener("input", calcInsurance);
+    el.addEventListener("change", calcInsurance);
+  });
+  document.getElementById("calcInsuranceBtn").addEventListener("click", function(){
+    calcInsurance();
+    var r = insuranceResult.querySelector(".result");
+    if (r) r.scrollIntoView({block:"start", behavior:"smooth"});
+  });
+
+  [bracket, paidAmount].forEach(function(el){
+    el.addEventListener("input", calcMedical);
+    el.addEventListener("change", calcMedical);
+  });
+  document.getElementById("calcMedicalBtn").addEventListener("click", function(){
+    calcMedical();
+    var r = medicalResult.querySelector(".result");
+    if (r) r.scrollIntoView({block:"start", behavior:"smooth"});
+  });
+
+  // 초기 실행
+  syncRadios();
+  updateNormalHint();
+  calcPension();
+  calcInsurance();
+  calcMedical();
+
+  // 해시로 들어온 경우 해당 탭
+  var hash = (location.hash || "").replace("#tab-","");
+  if (["pension","insurance","medical"].indexOf(hash) >= 0) activate(hash, false);
+})();
+</script>
+</body>
+</html>
