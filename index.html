@@ -311,6 +311,20 @@
   a.btn{text-align:center;text-decoration:none;line-height:58px}
   .foot nav{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 10px}
   .foot nav a{min-height:40px;display:inline-flex;align-items:center}
+
+  /* ── 쿠팡 파트너스 추천 배너 (5060 건강·생활) ── */
+  .promo{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin:0 0 16px;box-shadow:var(--shadow)}
+  .promo h2{font-size:19px;margin:0 0 6px}
+  .promo-lead{margin:0 0 14px;color:var(--muted);font-size:15px;line-height:1.6}
+  .promo-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .promo-card{display:flex;flex-direction:column;gap:5px;border:1.5px solid var(--line);border-radius:12px;padding:14px;background:#fbfcfe;text-decoration:none;color:var(--ink)}
+  .promo-card:hover,.promo-card:focus-visible{border-color:var(--brand);box-shadow:0 2px 10px rgba(23,73,184,.12)}
+  .promo-tag{align-self:flex-start;background:var(--brand-soft);color:var(--brand-dark);border-radius:999px;padding:3px 10px;font-size:13px;font-weight:800}
+  .promo-name{font-weight:800;font-size:16.5px;line-height:1.4;letter-spacing:-0.01em}
+  .promo-desc{font-size:14.5px;color:var(--muted);line-height:1.55}
+  .promo-cta{margin-top:5px;font-weight:800;font-size:15px;color:var(--brand-dark)}
+  .promo-notice{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.55;border-top:1px dashed var(--line);padding-top:10px}
+  @media (min-width:560px){.promo-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -790,6 +804,25 @@
       <p>이 사이트의 모든 결과는 <strong>모의 계산</strong>입니다. 법령, 고시, 공단 기준은 매년, 때로는 연중에도 바뀝니다. 실제 수령액과 자격, 환급액은 국민연금공단(1355)과 국민건강보험공단(1577-1000)에서 확인하세요. 이 계산 결과를 근거로 한 신청, 계약, 투자 판단의 책임은 이용자에게 있습니다.</p>
     </div>
 
+    <section class="promo" id="promo-5060" aria-labelledby="promo-5060-title">
+      <h2 id="promo-5060-title">5060 건강·생활 추천</h2>
+      <p class="promo-lead">계산기와 함께 많이 찾는 로켓배송 상품 2종입니다. 가격과 상세 정보는 쿠팡에서 확인하세요.</p>
+      <div class="promo-grid">
+        <a class="promo-card" href="https://link.coupang.com/a/iSPTrgtvEa" target="_blank" rel="sponsored nofollow noopener">
+          <span class="promo-tag">관절·무릎</span>
+          <span class="promo-name">잠스트 JK-BAND 무릎보호대</span>
+          <span class="promo-desc">계단을 오르내릴 때 무릎이 불편한 분들이 많이 찾는 밴드형 보호대입니다.</span>
+          <span class="promo-cta">쿠팡에서 보기 →</span>
+        </a>
+        <a class="promo-card" href="https://link.coupang.com/a/iSPO8i1g6e" target="_blank" rel="sponsored nofollow noopener">
+          <span class="promo-tag">온열·찜질</span>
+          <span class="promo-name">제스파 전기 온열 찜질기 SHP6751</span>
+          <span class="promo-desc">허리와 어깨, 배에 두고 쓰는 국내 제조 전기 온열 찜질기입니다.</span>
+          <span class="promo-cta">쿠팡에서 보기 →</span>
+        </a>
+      </div>
+      <p class="promo-notice">이 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
+    </section>
   </div>
 </main>
 
