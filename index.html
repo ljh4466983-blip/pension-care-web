@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>5060 연금, 건보료 계산기 | 국민연금 조기수령 손익분기, 건강보험 피부양자, 병원비 환급</title>
-<meta name="description" content="국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 병원비 본인부담상한제 환급액을 2026년 기준으로 바로 계산해 보세요. 출생연도와 금액만 넣으면 끝나는 5060 세대용 무료 계산기입니다.">
-<meta name="keywords" content="국민연금 조기수령, 조기노령연금, 손익분기, 건강보험 피부양자, 피부양자 탈락, 본인부담상한제, 병원비 환급, 5060, 연금 계산기">
+<title>5060 연금, 건보료 계산기 | 국민연금 조기수령, 피부양자, 지역가입자 건보료, 병원비 환급</title>
+<meta name="description" content="국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 지역가입자 예상 월 건보료(임의계속가입 비교), 병원비 본인부담상한제 환급액을 2026년 기준으로 바로 계산해 보세요. 출생연도와 금액만 넣으면 끝나는 5060 세대용 무료 계산기입니다.">
+<meta name="keywords" content="국민연금 조기수령, 조기노령연금, 손익분기, 건강보험 피부양자, 피부양자 탈락, 지역가입자 건강보험료, 지역가입자 건보료 계산, 임의계속가입, 본인부담상한제, 병원비 환급, 5060, 연금 계산기">
 <meta name="author" content="알려드림">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#1749b8">
@@ -16,8 +16,8 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="연금건보 체크">
-<meta property="og:title" content="5060 연금, 건보료 계산기: 조기수령 손익분기, 피부양자, 병원비 환급">
-<meta property="og:description" content="1년 6%, 5년이면 30% 깎이는 국민연금. 내가 유리한 나이는 언제일까요? 피부양자 탈락 여부와 병원비 환급액까지 한 화면에서 확인하세요.">
+<meta property="og:title" content="5060 연금, 건보료 계산기: 조기수령, 피부양자, 지역가입자 건보료">
+<meta property="og:description" content="1년 6%, 5년이면 30% 깎이는 국민연금. 내가 유리한 나이는 언제일까요? 피부양자 탈락 여부, 지역가입자 예상 건보료와 임의계속가입 비교, 병원비 환급액까지 한 화면에서 확인하세요.">
 <meta property="og:url" content="https://pension-care-web.vercel.app/">
 <meta property="og:image" content="https://pension-care-web.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -93,14 +93,17 @@
     border-bottom:1px solid var(--line);
     padding:10px 0 0;
   }
-  .tabs .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tabs .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
   .tabbtn{
     appearance:none;border:1.5px solid var(--line);background:#fff;color:#2c3340;
     border-radius:12px 12px 0 0;border-bottom:none;
-    padding:10px 4px 11px;font:inherit;font-weight:700;font-size:15.5px;line-height:1.3;
-    min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-    cursor:pointer;
+    padding:9px 2px 10px;font:inherit;font-weight:700;font-size:14.5px;line-height:1.24;
+    min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    cursor:pointer;text-align:center;word-break:keep-all;
   }
+  @media (max-width:420px){ .tabbtn{font-size:13.5px;letter-spacing:-0.02em} }
+  @media (min-width:430px){ .tabbtn br.sm{display:none} }
+  @media (min-width:600px){ .tabbtn{font-size:15.5px} }
   .tabbtn .num{
     font-size:12px;font-weight:800;color:#7a8395;letter-spacing:.04em
   }
@@ -331,7 +334,10 @@
       <span class="num">02</span><span>건보<br>피부양자</span>
     </button>
     <button class="tabbtn" id="tabbtn-medical" role="tab" aria-selected="false" aria-controls="tab-medical" data-tab="medical">
-      <span class="num">03</span><span>병원비<br>본인부담상한</span>
+      <span class="num">03</span><span>병원비<br>본인부담<br class="sm">상한</span>
+    </button>
+    <button class="tabbtn" id="tabbtn-regional" role="tab" aria-selected="false" aria-controls="tab-regional" data-tab="regional">
+      <span class="num">04</span><span>지역가입자<br>건보료</span>
     </button>
   </div>
 </nav>
@@ -555,10 +561,86 @@
       <aside class="related"><h2>더 자세히 알아보기</h2><ul><li><a href="/guide/medical-cap-2026">본인부담상한제 2026년 상한액 표와 환급액 계산법</a></li><li><a href="/guide/medical-cap-exclusions">본인부담상한제에서 빠지는 비용: 비급여, 선별급여, 상급병실</a></li><li><a href="/guide/medical-refund-how-to">본인부담상한제 환급금 조회와 신청 방법, 사전급여 정리</a></li></ul></aside>
     </section>
 
+    <!-- ══════════════ 탭 4 ══════════════ -->
+    <section class="panel" id="tab-regional" role="tabpanel" aria-labelledby="tabbtn-regional" tabindex="0">
+      <div class="card">
+        <h2>지역가입자 예상 월 건보료 계산기</h2>
+        <p class="lead">퇴직하거나 사업을 그만두면 건강보험이 지역가입자로 바뀝니다. 소득과 재산에 매겨지는 2026년 기준 월 보험료를 계산하고, 퇴직 전 수준으로 내는 임의계속가입과 나란히 비교해 보세요.</p>
+
+        <div class="field">
+          <label for="regPension">연간 공적연금·근로소득</label>
+          <div class="input-wrap">
+            <input id="regPension" type="number" inputmode="numeric" min="0" max="30000" step="10" value="1200" aria-describedby="regPensionHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="regPensionHint">국민연금, 공무원연금 같은 공적연금과 근로소득을 더한 <strong>세전 연간 금액</strong>입니다. 이 가운데 50%만 보험료에 반영됩니다. 둘 다 없으면 0으로 두세요.</p>
+        </div>
+
+        <div class="field">
+          <label for="regBiz">연간 사업·이자·배당·임대 등 기타소득</label>
+          <div class="input-wrap">
+            <input id="regBiz" type="number" inputmode="numeric" min="0" max="30000" step="10" value="0" aria-describedby="regBizHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="regBizHint">필요경비를 뺀 사업소득금액, 이자·배당, 주택임대소득입니다. 이 소득은 <strong>100%</strong> 반영됩니다. 이자·배당은 합계 1,000만 원을 넘을 때만 전액 들어가므로, 1,000만 원 이하면 빼고 넣으세요.</p>
+        </div>
+
+        <div class="field">
+          <label for="regProperty">재산세 과세표준 합계</label>
+          <div class="input-wrap">
+            <input id="regProperty" type="number" inputmode="numeric" min="0" max="100000" step="100" value="20000" aria-describedby="regPropertyHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="regPropertyHint">재산세 고지서에 찍힌 <strong>과세표준</strong>(공시가격이 아닙니다)을 주택·건물·토지별로 더하세요. 1억 원은 기본공제로 빠집니다. 무주택 세대는 전세·월세 보증금의 30%를 넣습니다. 보증금 3억 원이면 9,000만 원입니다. 자동차는 2024년 2월부터 부과하지 않습니다.</p>
+        </div>
+
+        <div class="field">
+          <label for="contValue">퇴직 전 직장 월 보수 <span style="font-weight:600;color:var(--muted)">(선택)</span></label>
+          <div class="radios" id="contRadios" style="margin:0 0 10px">
+            <label class="radio"><input type="radio" name="contMode" value="pay" checked><span>월 보수(세전)</span></label>
+            <label class="radio"><input type="radio" name="contMode" value="premium"><span>본인부담 건보료</span></label>
+          </div>
+          <div class="input-wrap">
+            <input id="contValue" type="number" inputmode="numeric" min="0" max="3000" step="10" value="0" aria-describedby="contValueHint">
+            <span class="unit">만 원</span>
+          </div>
+          <p class="hint" id="contValueHint">퇴직 전 세전 월급(보수월액)을 넣으면 임의계속가입 예상 보험료와 비교해 드립니다. 넣지 않으면 지역가입자 금액만 계산합니다.</p>
+        </div>
+
+        <button class="btn" id="calcRegionalBtn" type="button">월 건보료 계산하기</button>
+      </div>
+
+      <div id="regionalResult" aria-live="polite"></div>
+
+      <div class="content">
+        <h2>지역가입자 보험료는 이렇게 매겨집니다</h2>
+        <p>지역가입자는 직장가입자와 달리 회사가 절반을 나눠 주지 않습니다. 세대 단위로 소득과 재산을 합쳐 <strong>전액 본인이</strong> 냅니다. 산식은 두 덩어리를 더하는 것으로 단순합니다.</p>
+        <p><strong>월 건강보험료 = (소득월액 × 7.19%) + (재산보험료부과점수 × 211.5원)</strong></p>
+        <p>2023년부터 3년 동안 7.09%였던 보험료율이 2026년에 7.19%로 올랐습니다. 재산 점수당 금액도 208.4원에서 211.5원으로 함께 올랐습니다. 인터넷에 남아 있는 7.09%, 208.4원은 2025년 기준입니다.</p>
+        <table class="t-text">
+          <thead><tr><th>소득 종류</th><th>보험료 반영 비율</th></tr></thead>
+          <tbody>
+            <tr><td>공적연금, 근로소득</td><td>50%</td></tr>
+            <tr><td>사업소득, 기타소득</td><td>100%</td></tr>
+            <tr><td>이자, 배당</td><td>합계 1,000만 원 넘을 때 100% (이하면 빠짐)</td></tr>
+            <tr><td>주택임대소득</td><td>100% (사업소득으로 반영)</td></tr>
+          </tbody>
+        </table>
+        <h3>재산은 1억 원을 빼고 60등급으로</h3>
+        <p>재산세가 매겨지는 주택·건물·토지·선박·항공기의 과세표준을 더하고, 집이 없는 세대는 전세·월세 보증금을 <strong>(보증금 + 월세 × 40) × 30%</strong>로 평가해 더합니다. 여기서 1억 원을 빼고 남은 금액을 60개 등급표에서 찾아 점수를 매깁니다. 1억 원 이하면 재산분은 0원입니다.</p>
+        <p>실거주 목적 주택을 사거나 빌리면서 받은 대출은 공단에 서면으로 알리면 재산에서 빠집니다. 알리지 않으면 저절로 빠지지 않으니, 대출이 있는데 고지서 재산분이 그대로라면 공단에 확인해 보세요.</p>
+        <h3>하한과 상한</h3>
+        <p>소득이 거의 없어도 소득분은 최저보험료 20,160원부터 시작합니다(연 소득 336만 원 이하). 재산분은 그 위에 더해집니다. 반대로 소득과 재산이 아무리 많아도 월 459만 1,740원을 넘지 않습니다.</p>
+        <h3>자료는 11월에 한 해씩 바뀝니다</h3>
+        <p>1월부터 10월까지는 전전년도 소득으로, 11월부터 12월까지는 전년도 소득으로 보험료를 매깁니다. 연금소득은 1월에 따로 갱신됩니다. 재산은 그해 6월 1일 기준 과세표준이 11월부터 반영되어 다음 해 10월까지 쓰입니다. 그래서 소득이 줄었는데도 보험료가 그대로인 기간이 생깁니다.</p>
+      </div>
+      <aside class="related"><h2>더 자세히 알아보기</h2><ul><li><a href="/guide/voluntary-continuation">퇴직 후 건강보험 임의계속가입: 신청 조건, 기한, 따져볼 점</a></li><li><a href="/guide/dependent-income-criteria">건강보험 피부양자 소득 기준 2,000만 원, 무엇을 합산하나요</a></li><li><a href="/guide/dependent-property-criteria">피부양자 재산 기준: 재산세 과세표준 5.4억, 9억의 의미</a></li></ul></aside>
+    </section>
+
     <!-- ══════════════ 공통 콘텐츠 ══════════════ -->
     <div class="content" id="examples">
       <h2>실제 숫자로 보기</h2>
-      <p>계산기가 내놓는 결과가 어떤 모양인지, 흔한 경우 네 가지로 미리 보겠습니다.</p>
+      <p>계산기가 내놓는 결과가 어떤 모양인지, 흔한 경우 다섯 가지로 미리 보겠습니다.</p>
       <h3>1. 1965년생, 월 100만 원, 5년 조기수령</h3>
       <p>정상 수령은 만 64세, 조기수령은 만 59세부터입니다. 월액은 70만 원으로 줄지만 5년에 4,200만 원을 먼저 받습니다. 이 돈을 매달 30만 원씩 덜 받는 것으로 되돌리는 데 140개월이 걸려, <strong>만 75세 8개월</strong>이 손익분기 나이입니다.</p>
       <h3>2. 1962년생, 월 150만 원, 3년 조기수령</h3>
@@ -567,6 +649,8 @@
       <p>재산세 과세표준이 5억 4천만 원을 넘으면 소득 한도가 연 1,000만 원으로 내려갑니다. 국민연금을 월 100만 원 받아 연 1,200만 원이 되면 이 기준을 넘어 <strong>피부양자에서 탈락</strong>합니다. 재산이 5.4억 이하인 사람이라면 같은 소득으로도 통과합니다.</p>
       <h3>4. 4~5분위, 급여 본인부담 500만 원</h3>
       <p>2026년 4~5분위 상한액은 173만 원입니다. 500만 원을 냈다면 173만 원을 넘는 <strong>327만 원</strong>이 환급 대상입니다. 단, 이 500만 원은 비급여를 뺀 급여 본인부담금이어야 합니다.</p>
+      <h3>5. 국민연금 월 100만 원, 집 재산세 과표 2억 4천만 원</h3>
+      <p>연금 1,200만 원의 50%인 600만 원이 반영되어 소득분은 월 3만 5,950원입니다. 재산은 2억 4천만 원에서 1억 원을 빼고 21등급(516점)이 되어 10만 9,134원, 합치면 건강보험료 14만 5,084원에 장기요양보험료 1만 9,065원을 더해 <strong>월 16만 4,149원</strong>입니다. 같은 사람이 퇴직 전 월급이 300만 원이었다면 임의계속가입은 월 12만 2,022원이라, <strong>임의계속가입이 월 4만 2,127원</strong> 적습니다.</p>
     </div>
 
     <div class="content" id="faq">
@@ -637,6 +721,30 @@
       </details>
 
       <details>
+        <summary>지역가입자 건보료는 소득이 없어도 나오나요?</summary>
+        <div class="body">
+          <p>나옵니다. 2026년 기준 지역가입자 월 보험료 하한은 20,160원입니다. 소득이 연 336만 원 이하이면 소득분이 이 하한액으로 계산되고, 여기에 재산분이 더해집니다. 재산도 1억 원 이하라면 건강보험료는 20,160원, 장기요양보험료 2,649원을 보태 월 22,809원이 됩니다.</p>
+          <p>다만 지역보험료는 세대 단위입니다. 본인 소득이 0이어도 세대원의 소득과 재산이 합산되고, 무주택 세대의 전세·월세 보증금도 30%가 반영됩니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>재산이 1억 원 이하면 재산보험료가 0원인가요?</summary>
+        <div class="body">
+          <p>네. 2024년 2월부터 모든 지역가입자에게 재산 기본공제 1억 원이 적용됩니다(국민건강보험법 시행령 별표 4). 재산세 과세표준 합계가 1억 원 이하이면 재산분은 0원입니다. 같은 개편에서 자동차 보험료도 폐지되어, 이제 자동차는 보험료 산정에 들어가지 않습니다.</p>
+          <p>집이 없는 세대는 전세보증금의 30%만 재산으로 봅니다. 보증금 3억 원이면 9,000만 원이라 1억 원 공제에 걸려 재산분이 0원입니다. 재산이 1억 원을 넘더라도, 실거주 주택을 사거나 빌리면서 받은 대출을 공단에 서면으로 알리면 그만큼 빠집니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>퇴직 후 임의계속가입이 유리한가요?</summary>
+        <div class="body">
+          <p>재산은 많은데 퇴직 후 소득이 적다면 임의계속가입이 유리한 경우가 많습니다. 반대로 재직 중 급여가 높았고 재산이 적다면 지역보험료가 더 낮을 수 있습니다. 이 계산기의 ‘퇴직 전 직장 월 보수’에 값을 넣으면 두 금액을 나란히 비교해 드립니다.</p>
+          <p>조건은 퇴직 전 18개월 동안 직장가입자 자격을 통산 1년 이상 유지한 사람이고, 신청 기한은 지역가입자가 된 뒤 처음 받은 보험료 고지서의 납부기한부터 2개월 이내입니다. 기간은 퇴직 다음 날부터 최대 36개월이며, 보험료는 최근 12개월 보수월액 평균의 7.19% 가운데 50%입니다. 가족의 피부양자 요건을 충족한다면 피부양자가 가장 유리합니다.</p>
+        </div>
+      </details>
+
+      <details>
         <summary>계산 결과와 실제 고지서가 다른 이유는 무엇인가요?</summary>
         <div class="body">
           <p>이 계산기는 2026년 11월 기준 공개된 기준값으로 모의 계산합니다. 실제 금액은 가입기간 중 소득 이력, 부양가족 수, 재산 변동, 공단이 반영하는 소득, 재산 자료 시점(11월, 1월)에 따라 달라집니다. 정확한 금액은 국민연금공단(1355), 국민건강보험공단(1577-1000)에서 확인하세요.</p>
@@ -657,10 +765,17 @@
           <tr><td>피부양자 소득 기준</td><td>연 2,000만 원 (재산 과표 5.4억 초과 시 연 1,000만 원)</td></tr>
           <tr><td>피부양자 재산 기준</td><td>과세표준 5.4억 이하 / 5.4억~9억 + 소득 1,000만 원 이하 / 9억 초과 탈락</td></tr>
           <tr><td>본인부담상한액 (2026)</td><td>90만 ~ 843만 원 (요양병원 120일 초과 143만 ~ 1,096만 원)</td></tr>
+          <tr><td>건강보험료율 (2026)</td><td>7.19% (2025년 7.09%)</td></tr>
+          <tr><td>재산보험료부과점수당 금액 (2026)</td><td>211.5원 (2025년 208.4원)</td></tr>
+          <tr><td>지역가입자 소득 반영</td><td>공적연금·근로 50%, 사업·기타 100%, 이자·배당은 합계 1,000만 원 초과 시 전액</td></tr>
+          <tr><td>지역가입자 재산</td><td>재산세 과세표준 − 1억 원 → 60등급 점수 (전월세는 30%, 자동차 폐지)</td></tr>
+          <tr><td>지역가입자 월 보험료 하한·상한</td><td>20,160원 / 4,591,740원</td></tr>
+          <tr><td>장기요양보험료율 (2026)</td><td>0.9448% (건강보험료의 13.14%)</td></tr>
+          <tr><td>임의계속가입</td><td>최대 36개월, 최근 12개월 보수월액 평균 × 7.19%의 50%</td></tr>
           <tr><td>기대수명 (2024 생명표)</td><td>남 80.8세, 여 86.6세, 전체 83.7세</td></tr>
         </tbody>
       </table>
-      <p class="src">확인 기준일 2026년 11월 22일. 출처: 보건복지부 국민연금 급여 안내, 국민연금공단 A값, 조기노령연금 안내, 국민건강보험법 시행규칙 별표 1의2, 국민건강보험공단 2026년도 본인부담상한액 안내(대한병원협회 공지 2026.1.13.), 국가데이터처 2024년 생명표.</p>
+      <p class="src">확인 기준일 2026년 11월 22일. 출처: 보건복지부 국민연금 급여 안내, 국민연금공단 A값, 조기노령연금 안내, 국민건강보험법 시행규칙 별표 1의2, 국민건강보험법 시행령 제44조·별표 4 및 시행규칙 제44조, 보건복지부 2026년 건강보험료율 결정 보도자료(2025.8.28.), 2026년도 장기요양보험료율 보도자료(2025.11.4.), 보험료 경감고시(제2025-221호), 월별 건강보험료액의 상한과 하한에 관한 고시(제2025-222호), 국민건강보험법 제110조·시행령 제77조(임의계속가입), 국민건강보험공단 2026년도 본인부담상한액 안내(대한병원협회 공지 2026.1.13.), 국가데이터처 2024년 생명표.</p>
     </div>
 
     <div class="content" id="privacy">
@@ -682,7 +797,7 @@
   <div class="wrap">
     <strong>연금건보 체크</strong>
     <p>5060 세대를 위한 무료 계산기, 2026년 11월 기준<br>모의 계산이며 실제 수치는 국민연금공단, 건강보험공단에서 확인하세요.</p>
-    <nav aria-label="하단 메뉴"><a href="/#tab-pension">국민연금 조기수령</a><a href="/#tab-insurance">피부양자 진단</a><a href="/#tab-medical">병원비 환급</a><a href="/guide">가이드</a><a href="/about">소개</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav>
+    <nav aria-label="하단 메뉴"><a href="/#tab-pension">국민연금 조기수령</a><a href="/#tab-insurance">피부양자 진단</a><a href="/#tab-medical">병원비 환급</a><a href="/#tab-regional">지역가입자 건보료</a><a href="/guide">가이드</a><a href="/about">소개</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav>
     <div class="disclaimer">
       이 페이지의 계산 결과는 참고용입니다. 국민연금, 건강보험 제도는 개인별 가입 이력과 공단이 반영하는 자료에 따라 결과가 달라지므로, 신청 전 반드시 공단에 확인하시기 바랍니다.
     </div>
@@ -700,9 +815,9 @@
       "applicationCategory":"FinanceApplication",
       "operatingSystem":"All",
       "inLanguage":"ko-KR",
-      "description":"국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 본인부담상한제 환급액을 2026년 기준으로 계산하는 무료 웹 계산기입니다.",
+      "description":"국민연금 조기수령 손익분기 나이, 건강보험 피부양자 탈락 여부, 지역가입자 예상 월 건보료(임의계속가입 비교), 본인부담상한제 환급액을 2026년 기준으로 계산하는 무료 웹 계산기입니다.",
       "offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
-      "featureList":["국민연금 조기수령 손익분기 계산","건강보험 피부양자 자가진단","본인부담상한제 환급액 계산"]
+      "featureList":["국민연금 조기수령 손익분기 계산","건강보험 피부양자 자가진단","지역가입자 예상 월 건보료와 임의계속가입 비교","본인부담상한제 환급액 계산"]
     },
     {
       "@type":"FAQPage",
@@ -710,6 +825,8 @@
         {"@type":"Question","name":"국민연금 5년 조기수령은 정말 30% 손해인가요?","acceptedAnswer":{"@type":"Answer","text":"받는 금액은 30% 줄지만 5년 동안 먼저 받는 돈이 정상액의 350%입니다. 월 100만 원 기준이면 5년에 4,200만 원을 먼저 받고 이후 매달 30만 원씩 덜 받아, 정상 수령 나이 65세 기준 만 76세 8개월 무렵 누적액이 역전됩니다."}},
         {"@type":"Question","name":"조기수령 중에 일하면 연금이 멈추나요?","acceptedAnswer":{"@type":"Answer","text":"조기노령연금 수령 중 소득이 있는 업무에 종사하면 그 기간 지급이 정지됩니다. 2026년 기준 월평균소득금액이 A값 319만 3,511원을 넘는지로 판단하며, 정상 수령 후 감액 기준인 A값+200만 원(519만 3,511원)과는 다릅니다."}},
         {"@type":"Question","name":"건강보험 피부양자는 연금을 얼마까지 받아도 되나요?","acceptedAnswer":{"@type":"Answer","text":"재산세 과세표준이 5억 4천만 원 이하이면 연 소득 2,000만 원까지 가능하고, 5.4억 초과 9억 이하이면 연 1,000만 원 이하일 때만 인정됩니다. 9억을 넘으면 소득과 무관하게 탈락합니다."}},
+        {"@type":"Question","name":"지역가입자 건보료는 소득이 없어도 나오나요?","acceptedAnswer":{"@type":"Answer","text":"나옵니다. 2026년 기준 지역가입자 월 보험료 하한은 20,160원입니다. 소득이 연 336만 원 이하이면 소득분이 하한액으로 계산되고 재산분이 더해집니다. 재산도 1억 원 이하라면 건강보험료 20,160원에 장기요양보험료 2,649원을 보태 월 22,809원입니다."}},
+        {"@type":"Question","name":"퇴직 후 임의계속가입이 유리한가요?","acceptedAnswer":{"@type":"Answer","text":"재산은 많은데 퇴직 후 소득이 적으면 임의계속가입이 유리한 경우가 많고, 재직 중 급여가 높고 재산이 적으면 지역보험료가 더 낮을 수 있습니다. 퇴직 전 18개월 중 직장가입자 자격이 통산 1년 이상이어야 하고, 최초 지역보험료 납부기한부터 2개월 안에 신청해야 하며, 최대 36개월 동안 최근 12개월 보수월액 평균의 7.19% 가운데 50%를 냅니다."}},
         {"@type":"Question","name":"본인부담상한제는 어떤 병원비가 합산되나요?","acceptedAnswer":{"@type":"Answer","text":"건강보험이 적용되는 급여 진료의 본인일부부담금만 합산합니다. 비급여, 선별급여, 전액본인부담, 상급병실료 차액, 임플란트, 추나요법, 간병비는 제외됩니다."}},
         {"@type":"Question","name":"본인부담상한제 환급금은 언제 받나요?","acceptedAnswer":{"@type":"Answer","text":"진료 다음 해 8월 말부터 개인별 상한액이 확정되어 정산 지급됩니다. 한 병원 납부액이 843만 원을 넘으면 사전급여, 개인 누적액이 1,096만 원을 넘으면 매월 지급됩니다."}}
       ]
@@ -1124,6 +1241,175 @@
     medicalResult.innerHTML = html;
   }
 
+  /* ═════════════ 탭 4 : 지역가입자 건보료 ═════════════ */
+  var RATE = 0.0719;                 // 2026년 건강보험료율 (시행령 제44조①, 1만분의 719)
+  var POINT_WON = 211.5;             // 2026년 재산보험료부과점수당 금액 (시행령 제44조②)
+  var LTC_RATIO = 0.9448 / 7.19;     // 장기요양보험료 = 건강보험료 × 13.14%
+  var MIN_PREM = 20160;              // 지역가입자 월 보험료 하한 (고시 제2025-222호)
+  var MAX_PREM = 4591740;            // 지역가입자 월 보험료 상한
+  var PROP_DEDUCT = 100000000;       // 재산 기본공제 1억 원 (2024.2~)
+  var EMP_RATE = 0.03595;            // 직장가입자 본인부담률 (7.19%의 50%)
+  var LOW_INCOME_LINE = 3360000;     // 연 소득 336만 원 이하 → 소득분은 최저보험료
+  // 시행령 별표 4 재산등급별 점수 (1~60등급, 상한만 적음. 금액 단위 만 원)
+  var PROP_LIMITS = [450,900,1350,1800,2250,2700,3150,3600,4050,4500,
+    5020,5590,6220,6930,7710,8590,9570,10700,11900,13300,
+    14800,16400,18300,20400,22700,25300,28100,31300,34900,38800,
+    43200,48100,53600,59700,66500,74000,82400,91800,103000,114000,
+    127000,142000,158000,176000,196000,218000,242000,270000,300000,330000,
+    363000,399300,439230,483153,531468,584615,643077,707385,778124];
+  var PROP_POINTS = [22,44,66,97,122,146,171,195,219,244,
+    268,294,320,344,365,386,412,439,465,490,
+    516,535,559,586,611,637,659,681,706,731,
+    757,785,812,841,881,921,961,1001,1041,1091,
+    1141,1191,1241,1291,1341,1391,1451,1511,1571,1641,
+    1711,1781,1851,1921,1991,2061,2131,2201,2271,2341];
+
+  var regPension = document.getElementById("regPension");
+  var regBiz = document.getElementById("regBiz");
+  var regProperty = document.getElementById("regProperty");
+  var contValue = document.getElementById("contValue");
+  var contValueHint = document.getElementById("contValueHint");
+  var regionalResult = document.getElementById("regionalResult");
+
+  function contMode(){
+    var c = document.querySelector('input[name="contMode"]:checked');
+    return c ? c.value : "pay";
+  }
+  function syncContRadios(){
+    Array.prototype.forEach.call(document.querySelectorAll("#contRadios .radio"), function(l){
+      l.classList.toggle("is-on", l.querySelector("input").checked);
+    });
+  }
+  function updateContHint(){
+    if (contMode() === "premium"){
+      contValueHint.innerHTML = "급여명세서나 퇴직 전 건보료 고지서의 <strong>건강보험료 본인부담액</strong>(장기요양보험료는 빼고)을 넣으세요. 2026년 본인부담률 3.595%로 월 보수를 되돌려 계산합니다.";
+    } else {
+      contValueHint.innerHTML = "퇴직 전 세전 월급(보수월액)을 넣으면 임의계속가입 예상 보험료와 비교해 드립니다. 급여명세서의 본인부담액이 익숙하면 위에서 ‘본인부담 건보료’를 고르세요. 넣지 않으면 지역가입자 금액만 계산합니다.";
+    }
+  }
+  document.getElementById("contRadios").addEventListener("change", function(){
+    syncContRadios(); updateContHint(); calcRegional();
+  });
+
+  function propScore(propertyWon){
+    var after = propertyWon - PROP_DEDUCT;
+    if (after <= 0) return {after:0, points:0, grade:0};
+    var man = after / 10000;
+    for (var i = 0; i < PROP_LIMITS.length; i++){
+      if (man <= PROP_LIMITS[i]) return {after:after, points:PROP_POINTS[i], grade:i+1};
+    }
+    return {after:after, points:PROP_POINTS[PROP_POINTS.length-1], grade:PROP_POINTS.length};
+  }
+
+  function calcRegional(){
+    var penW = num(regPension.value, 0) * 10000;
+    var bizW = num(regBiz.value, 0) * 10000;
+    var propW = num(regProperty.value, 0) * 10000;
+
+    var evalIncome = penW * 0.5 + bizW;          // 평가소득 (연금·근로 50%, 그 밖 100%)
+    var monthly = evalIncome / 12;
+    var lowIncome = evalIncome <= LOW_INCOME_LINE;
+    var incomePrem = lowIncome ? MIN_PREM : Math.round(monthly * RATE);
+
+    var ps = propScore(propW);
+    var propPrem = Math.round(ps.points * POINT_WON);
+
+    var health = incomePrem + propPrem;
+    var capped = false, floored = false;
+    if (health > MAX_PREM){ health = MAX_PREM; capped = true; }
+    if (health < MIN_PREM){ health = MIN_PREM; floored = true; }
+    var ltc = Math.round(health * LTC_RATIO);
+    var total = health + ltc;
+
+    var html = '<div class="result">';
+    html += '<h3>계산 결과</h3>';
+
+    html += '<div class="duo">';
+    html += '<div class="mini"><p class="k">건강보험료</p><p class="v" style="color:#1749b8;font-size:21px">' + won(health) + '원</p>';
+    html += '<p class="s">소득분 ' + won(incomePrem) + '원 + 재산분 ' + won(propPrem) + '원</p></div>';
+    html += '<div class="mini"><p class="k">장기요양보험료</p><p class="v" style="font-size:21px">' + won(ltc) + '원</p>';
+    html += '<p class="s">매달 건강보험료의 13.14%</p></div>';
+    html += '</div>';
+
+    html += '<div class="big"><p class="k">지역가입자로 내는 월 보험료</p>';
+    html += '<p class="v">월 ' + won(total) + '원</p>';
+    html += '<p class="s">건강보험료 ' + won(health) + '원 + 장기요양보험료 ' + won(ltc) + '원<br>1년이면 ' + won(total*12) + '원입니다.</p></div>';
+
+    // 산정 내역
+    html += '<div class="tablewrap" style="margin-top:16px"><table class="t-compact">';
+    html += '<caption>산정 내역 (2026년 기준)</caption>';
+    html += '<thead><tr><th>항목</th><th>금액</th></tr></thead><tbody>';
+    html += '<tr><td>연간 소득 평가액</td><td>' + (evalIncome === 0 ? '0원' : pretty(evalIncome)) + '</td></tr>';
+    html += '<tr><td>소득월액</td><td>' + (evalIncome === 0 ? '—' : (lowIncome ? '28만 원 이하' : pretty(monthly))) + '</td></tr>';
+    html += '<tr><td>소득분 보험료</td><td><strong>' + won(incomePrem) + '원</strong>' + (lowIncome ? ' (최저)' : '') + '</td></tr>';
+    html += '<tr><td>재산 공제 후 금액</td><td>' + (ps.after === 0 ? '없음 (1억 원 이하)' : pretty(ps.after)) + '</td></tr>';
+    html += '<tr><td>재산 등급</td><td>' + (ps.grade === 0 ? '—' : ps.grade + '등급 ' + ps.points + '점') + '</td></tr>';
+    html += '<tr><td>재산분 보험료</td><td><strong>' + won(propPrem) + '원</strong></td></tr>';
+    html += '<tr><td>보험료 상·하한</td><td>' + (capped ? '상한 ' + won(MAX_PREM) + '원 적용' : (floored ? '하한 ' + won(MIN_PREM) + '원 적용' : '해당 없음')) + '</td></tr>';
+    html += '</tbody></table></div>';
+
+    // 안내
+    if (lowIncome){
+      html += '<div class="note"><p><strong>소득이 연 336만 원 이하라 소득분은 최저보험료 ' + won(MIN_PREM) + '원으로 계산했습니다.</strong> 소득이 없어도 이 금액은 나오고, 재산분은 그 위에 더해집니다.</p></div>';
+    }
+    if (ps.after === 0 && propW > 0){
+      html += '<div class="note ok"><p>재산세 과세표준 ' + pretty(propW) + '이 1억 원 이하라 <strong>재산분은 0원</strong>입니다. 재산 기본공제가 1억 원으로 올라간 2024년 2월 이후 기준입니다.</p></div>';
+    }
+    if (lowIncome && propW === 0){
+      html += '<div class="note warn"><p><strong>재산이 없어도 세대에 집이 있으면 보험료가 달라집니다.</strong> 지역보험료는 세대 단위로 매겨집니다. 배우자 등 세대원의 소득과 재산, 무주택 세대의 전월세 보증금(30% 반영)도 함께 넣어 다시 계산해 보세요.</p></div>';
+    }
+    if (capped){
+      html += '<div class="note warn"><p><strong>월 보험료 상한(' + won(MAX_PREM) + '원)이 적용됐습니다.</strong> 소득과 재산이 이보다 많아도 상한을 넘지 않습니다.</p></div>';
+    }
+
+    // 임의계속가입 비교
+    var contW = num(contValue.value, 0) * 10000;
+    if (contW > 0){
+      var mode = contMode();
+      var contHealth = (mode === "premium")
+        ? Math.round(contW * (RATE * 0.5) / EMP_RATE)
+        : Math.round(contW * RATE * 0.5);
+      var contLtc = Math.round(contHealth * LTC_RATIO);
+      var contTotal = contHealth + contLtc;
+      var diff = total - contTotal;             // 지역가입자 − 임의계속
+      var threeYear = Math.abs(diff) * 36;
+
+      html += '<h3 style="margin-top:26px">임의계속가입과 비교</h3>';
+      if (diff > 0){
+        html += '<span class="badge ok">임의계속가입이 유리해 보입니다</span>';
+        html += '<p class="verdict">임의계속가입이 월 ' + won(diff) + '원, 36개월이면 약 ' + won(threeYear) + '원 적습니다.</p>';
+      } else if (diff < 0){
+        html += '<span class="badge warn">지역가입자가 유리해 보입니다</span>';
+        html += '<p class="verdict">지역가입자가 월 ' + won(-diff) + '원, 36개월이면 약 ' + won(threeYear) + '원 적습니다.</p>';
+      } else {
+        html += '<span class="badge ok">거의 같습니다</span>';
+        html += '<p class="verdict">두 금액이 사실상 같습니다. 피부양자 등재가 가능한지 먼저 확인해 보세요.</p>';
+      }
+
+      html += '<div class="tablewrap" style="margin-top:12px"><table class="t-compact">';
+      html += '<caption>월 보험료 비교 (건강보험료 + 장기요양보험료, 단위 원)</caption>';
+      html += '<thead><tr><th>구분</th><th>건강보험료</th><th>장기요양</th><th>합계</th></tr></thead><tbody>';
+      html += '<tr><td>지역가입자</td><td>' + won(health) + '</td><td>' + won(ltc) + '</td><td><strong>' + won(total) + '</strong></td></tr>';
+      html += '<tr><td>임의계속가입</td><td>' + won(contHealth) + '</td><td>' + won(contLtc) + '</td><td><strong>' + won(contTotal) + '</strong></td></tr>';
+      html += '</tbody></table></div>';
+
+      html += '<div class="note"><p><strong>임의계속가입은 조건과 기한이 정해져 있습니다.</strong></p><ul>';
+      html += '<li>퇴직한 날 이전 18개월 동안 직장가입자 자격을 통산 1년(365일) 이상 유지해야 합니다. 개인사업장 대표로 가입한 기간은 빠집니다.</li>';
+      html += '<li>지역가입자가 된 뒤 처음 받은 지역보험료 고지서의 <strong>납부기한부터 2개월 이전</strong>까지 신청해야 합니다. 기한을 넘기면 쓸 수 없습니다.</li>';
+      html += '<li>기간은 퇴직 다음 날부터 최대 36개월이고, 재취업하거나 피부양자가 되면 그 전날에 끝납니다.</li>';
+      html += '<li>보험료는 퇴직 월을 포함한 최근 12개월 보수월액 평균에 7.19%를 곱한 금액의 50%입니다(보험료 경감고시 제9조). 회사 몫이 없어 본인이 전액 냅니다.</li>';
+      html += '<li>연금 등 보수 외 소득이 연 2,000만 원을 넘으면 그 초과분에 대한 보수 외 소득월액보험료가 따로 붙습니다.</li>';
+      html += '</ul></div>';
+      html += '<p class="hint" style="margin-top:12px">임의계속가입 예상액은 퇴직 전 보수월액을 그대로 쓴 값입니다. 실제로는 퇴직정산으로 확정된 보수월액과 국세청 소득자료에 따라 달라지므로, 신청 화면의 예상보험료와 공단(1577-1000) 안내를 함께 확인하세요.</p>';
+    } else {
+      html += '<div class="note"><p><strong>퇴직 직후라면 임의계속가입과 비교해 보세요.</strong> 위 ‘퇴직 전 직장 월 보수’를 넣으면 퇴직 전 수준으로 내는 임의계속가입 예상액과 나란히 비교해 드립니다. 가족의 피부양자 요건을 충족한다면 피부양자가 가장 유리합니다.</p></div>';
+    }
+
+    html += '<p class="hint" style="margin-top:14px">2026년 11월 기준 공개된 기준값으로 계산한 모의 금액입니다. 고지서의 끝수 처리 방식에 따라 몇십 원 차이가 날 수 있고, 세대 구성과 공단에 반영된 자료에 따라 달라집니다. 정확한 금액은 국민건강보험공단(1577-1000)에서 확인하세요.</p>';
+    html += '</div>';
+    regionalResult.innerHTML = html;
+  }
+
   /* ═════════════ 이벤트 연결 ═════════════ */
   birthYear.addEventListener("change", calcPension);
   normalPension.addEventListener("input", calcPension);
@@ -1154,16 +1440,35 @@
     if (r) r.scrollIntoView({block:"start", behavior:"smooth"});
   });
 
+  [regPension, regBiz, regProperty, contValue].forEach(function(el){
+    el.addEventListener("input", calcRegional);
+    el.addEventListener("change", calcRegional);
+  });
+  document.getElementById("calcRegionalBtn").addEventListener("click", function(){
+    calcRegional();
+    var r = regionalResult.querySelector(".result");
+    if (r) r.scrollIntoView({block:"start", behavior:"smooth"});
+  });
+
   // 초기 실행
   syncRadios();
+  syncContRadios();
   updateNormalHint();
+  updateContHint();
   calcPension();
   calcInsurance();
   calcMedical();
+  calcRegional();
 
   // 해시로 들어온 경우 해당 탭
-  var hash = (location.hash || "").replace("#tab-","");
-  if (["pension","insurance","medical"].indexOf(hash) >= 0) activate(hash, false);
+  var TAB_NAMES = ["pension","insurance","medical","regional"];
+  function tabFromHash(){ return (location.hash || "").replace("#tab-",""); }
+  var hash = tabFromHash();
+  if (TAB_NAMES.indexOf(hash) >= 0) activate(hash, false);
+  window.addEventListener("hashchange", function(){
+    var h = tabFromHash();
+    if (TAB_NAMES.indexOf(h) >= 0) activate(h, false);
+  });
 })();
 </script>
 </body>
